@@ -17,12 +17,12 @@ sources = files(
     'core/os_methods.c',
     'core/variable.c',
     'core/vsnprintf.c',
+    'core/timer.c',
     'helpers/pc-bios.c',
     'helpers/pci.c',
     'helpers/resource.c',
     'helpers/sci.c',
     'helpers/pm.c',
-    'drivers/timer.c',
 )
 
 includes = include_directories('include')

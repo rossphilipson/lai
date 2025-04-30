@@ -3,7 +3,7 @@
  * Copyright (C) 2018-2023 The lai authors
  */
 
-#include <lai/drivers/timer.h>
+#include <lai/timer.h>
 #include <lai/helpers/sci.h>
 
 // ACPI timer runs at 3.579545 MHz
