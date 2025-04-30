@@ -22,7 +22,6 @@ sources = files(
     'helpers/resource.c',
     'helpers/sci.c',
     'helpers/pm.c',
-    'drivers/ec.c',
     'drivers/timer.c',
 )
 
