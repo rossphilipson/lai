@@ -33,7 +33,7 @@ lai_api_error_t lai_start_pm_timer() {
 
     supported = 1;
 
-    if (lai_current_instance()->acpi_revision >= 2 && fadt->x_pm_timer_block.base) {
+    if (fadt->x_pm_timer_block.base) {
         timer_block = fadt->x_pm_timer_block;
         if (timer_block.address_space == ACPI_GAS_MMIO)
             timer_mmio_reg = (volatile uint32_t *)laihost_map(timer_block.base, 4);

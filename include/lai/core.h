@@ -36,7 +36,6 @@ struct lai_instance {
     size_t ns_size;
     size_t ns_capacity;
 
-    int acpi_revision;
     int trace;
     int is_hw_reduced;
 
@@ -172,9 +171,6 @@ lai_api_error_t lai_eval(lai_variable_t *, lai_nsnode_t *, lai_state_t *);
 
 // ACPI Control Methods
 lai_api_error_t lai_populate(lai_nsnode_t *, struct lai_aml_segment *, lai_state_t *);
-
-// LAI initialization functions
-void lai_set_acpi_revision(int);
 
 // LAI debugging functions.
 
