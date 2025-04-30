@@ -17,7 +17,6 @@ sources = files(
     'core/os_methods.c',
     'core/variable.c',
     'core/vsnprintf.c',
-    'core/timer.c',
     'helpers/pc-bios.c',
     'helpers/pci.c',
     'helpers/resource.c',
