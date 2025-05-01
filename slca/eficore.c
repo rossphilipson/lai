@@ -40,7 +40,6 @@
 #include <page.h>
 #include <printk.h>
 #include <eficore.h>
-#include <eficonfig.h>
 #include <pe.h>
 #include <tb_error.h>
 #include <tboot.h>
@@ -63,7 +62,6 @@ EFI_DEVICE_PATH EfiEndInstanceDevicePath[] = {
    {END_DEVICE_PATH_TYPE, END_INSTANCE_DEVICE_PATH_SUBTYPE, {END_DEVICE_PATH_LENGTH, 0}}
 };
 
-
 /* EFI IDs */
 EFI_GUID EfiGlobalVariable  = EFI_GLOBAL_VARIABLE;
 EFI_GUID NullGuid = { 0,0,0,{0,0,0,0,0,0,0,0} };
@@ -84,6 +82,9 @@ EFI_GUID SMBIOSTableGuid          = SMBIOS_TABLE_GUID;
 
 /* TBOOT/Xen */
 EFI_GUID TbootXenGuid             = EFI_TBOOT_XEN_GUID;
+
+/* Is this pre or post EBS */
+static bool postebs = false;
 
 void atow(wchar_t *dst, const char *src, uint64_t count)
 {
@@ -187,6 +188,16 @@ wchar_t *atow_cat(const wchar_t *base, const char *tail)
     atow((dst + wcount - 1), tail, scount);
 
     return dst;
+}
+
+void efi_set_postebs(void)
+{
+    postebs = true;
+}
+
+bool efi_is_postebs(void)
+{
+    return postebs;
 }
 
 uint8_t *efi_get_rsdp(void)

@@ -41,8 +41,6 @@
 #include <page.h>
 #include <printk.h>
 #include <eficore.h>
-#include <eficonfig.h>
-#include <uuid.h>
 #include <tb_error.h>
 #include <tboot.h>
 
@@ -51,16 +49,6 @@ static EFI_HANDLE       parent_device_handle;
 static EFI_DEVICE_PATH *device_path;
 static void            *init_base; /* before reloc */
 static uint64_t         init_size; /* original size */
-
-static EFI_FILE_IO_INTERFACE *efi_file_system = NULL;
-
-/* Store raw config files in MLE so they can be measured */
-static __text uint8_t tboot_config_file[EFI_MAX_CONFIG_FILE];
-static __text uint8_t xen_config_file[EFI_MAX_CONFIG_FILE];
-
-/* Store parsed  config files in the data section */
-static __data uint8_t tboot_parsed_config_file[EFI_MAX_CONFIG_FILE];
-static __data uint8_t xen_parsed_config_file[EFI_MAX_CONFIG_FILE];
 
 #ifdef EFI_DEBUG
 static void efi_debug_pause(void)

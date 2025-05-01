@@ -44,7 +44,6 @@
 #include <printk.h>
 #include <cmdline.h>
 #include <eficore.h>
-#include <eficonfig.h>
 #include <tb_error.h>
 #include <tboot.h>
 
@@ -76,11 +75,6 @@ static const cmdline_option_t g_tboot_cmdline_options[] = {
     { "serial",     "115200,8n1,0x3f8" },
     /* serial=<baud>[/<clock_hz>][,<DPS>[,<io-base>[,<irq>[,<serial-bdf>[,<bridge-bdf>]]]]] */
     { "vga_delay",  "0" },           /* # secs */
-    { "ap_wake_mwait", "false" },    /* true|false */
-    { "pcr_map", "legacy" },         /* legacy|da */
-    { "min_ram", "0" },              /* size in bytes | 0 for no min */
-    { "call_racm", "false" },        /* true|false|check */
-    { "measure_nv", "false" },       /* true|false */
     { NULL, NULL }
 };
 static char g_tboot_param_values[ARRAY_SIZE(g_tboot_cmdline_options)][MAX_VALUE_LEN];
@@ -273,7 +267,6 @@ void get_tboot_log_targets(void)
             g_log_targets |= TBOOT_LOG_TARGET_SERIAL;
             targets += 6;
         }
-/* TODO
         else if ( strncmp(targets, "vga", 3) == 0 && efi_is_postebs() ) {
             g_log_targets |= TBOOT_LOG_TARGET_VGA;
             targets += 3;
@@ -282,7 +275,6 @@ void get_tboot_log_targets(void)
             g_log_targets |= TBOOT_LOG_TARGET_EFI;
             targets += 3;
         }
-*/
         else
             break; /* unrecognized, end loop */
 
@@ -449,64 +441,6 @@ void get_tboot_vga_delay(void)
 
     g_vga_delay = strtoul(vga_delay, NULL, 0);
 }
-
-bool get_tboot_prefer_da(void)
-{
-    const char *value = get_option_val(g_tboot_cmdline_options,
-                                       g_tboot_param_values, "pcr_map");
-    if ( value != NULL && strcmp(value, "da") == 0 )
-        return true;
-
-    return false;
-}
-
-uint32_t g_min_ram;
-void get_tboot_min_ram(void)
-{
-    const char *min_ram = get_option_val(g_tboot_cmdline_options,
-                                         g_tboot_param_values, "min_ram");
-    if ( min_ram == NULL )
-        return;
-
-    g_min_ram = strtoul(min_ram, NULL, 0);
-}
-
-bool get_tboot_mwait(void)
-{
-    const char *mwait = get_option_val(g_tboot_cmdline_options,
-                                       g_tboot_param_values, "ap_wake_mwait");
-    if ( mwait == NULL || strcmp(mwait, "false") == 0 )
-        return false;
-    return true;
-}
-
-bool get_tboot_call_racm(void)
-{
-    const char *call_racm = get_option_val(g_tboot_cmdline_options,
-                                       g_tboot_param_values, "call_racm");
-    if ( call_racm == NULL || strcmp(call_racm, "true") != 0 )
-        return false;
-    return true;
-}
-
-bool get_tboot_call_racm_check(void)
-{
-    const char *call_racm = get_option_val(g_tboot_cmdline_options,
-                                       g_tboot_param_values, "call_racm");
-    if ( call_racm == NULL || strcmp(call_racm, "check") != 0 )
-        return false;
-    return true;
-}
-
-bool get_tboot_measure_nv(void)
-{
-    const char *measure_nv = get_option_val(g_tboot_cmdline_options,
-                                       g_tboot_param_values, "measure_nv");
-    if ( measure_nv == NULL || strcmp(measure_nv, "true") != 0 )
-        return false;
-    return true;
-}
-
 
 /*
  * linux kernel command line parsing

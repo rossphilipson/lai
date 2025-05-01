@@ -47,11 +47,6 @@ bool get_tboot_serial(void);
 void get_tboot_baud(void);
 void get_tboot_fmt(void);
 void get_tboot_vga_delay(void);
-bool get_tboot_mwait(void);
-bool get_tboot_prefer_da(void);
-void get_tboot_min_ram(void);
-bool get_tboot_call_racm(void);
-bool get_tboot_call_racm_check(void);
 bool get_tboot_measure_nv(void);
 
 /* for parse cmdline of linux kernel, say vga and mem */
