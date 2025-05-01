@@ -41,7 +41,6 @@
 #include <page.h>
 #include <printk.h>
 #include <eficore.h>
-#include <tb_error.h>
 #include <efitf.h>
 
 static EFI_HANDLE       parent_image_handle;

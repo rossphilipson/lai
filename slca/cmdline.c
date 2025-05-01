@@ -43,7 +43,6 @@
 #include <printk.h>
 #include <cmdline.h>
 #include <eficore.h>
-#include <tb_error.h>
 #include <efitf.h>
 
 /*

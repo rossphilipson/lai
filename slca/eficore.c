@@ -41,7 +41,6 @@
 #include <printk.h>
 #include <eficore.h>
 #include <pe.h>
-#include <tb_error.h>
 #include <efitf.h>
 
 /* Global Table Pointers */

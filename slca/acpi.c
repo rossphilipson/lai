@@ -40,7 +40,6 @@
 #include <io.h>
 #include <string.h>
 #include <printk.h>
-#include <tb_error.h>
 #include <eficore.h>
 #include <efitf.h>
 #include <acpi.h>

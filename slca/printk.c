@@ -43,7 +43,6 @@
 #include <printk.h>
 #include <eficore.h>
 #include <cmdline.h>
-#include <tb_error.h>
 #include <efitf.h>
 
 uint8_t g_log_level = EFITF_LOG_LEVEL_NONE;
