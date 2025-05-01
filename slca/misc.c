@@ -46,7 +46,6 @@
 #include <page.h>
 #include <ctype.h>
 #include <misc.h>
-#include <efitf.h>
 #include <tb_error.h>
 
 /*

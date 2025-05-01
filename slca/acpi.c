@@ -167,7 +167,7 @@ struct acpi_rsdp
 }
 
 /* this function can find dmar table whether or not it was hidden */
-static struct acpi_table_header *find_table(const char *table_name)
+struct acpi_table_header *acpi_find_table(const char *table_name)
 {
     uint64_t *curr_table_64;
     uint32_t *curr_table_32;
@@ -215,7 +215,7 @@ static struct acpi_table_header *find_table(const char *table_name)
 
 static struct acpi_dmar *get_vtd_dmar_table(void)
 {
-    return (struct acpi_dmar *)find_table(DMAR_SIG);
+    return (struct acpi_dmar *)acpi_find_table(DMAR_SIG);
 }
 
 bool save_vtd_dmar_table(void)
@@ -280,7 +280,7 @@ bool remove_vtd_dmar_table(void)
 
 static struct acpi_madt *get_apic_table(void)
 {
-    return (struct acpi_madt *)find_table(MADT_SIG);
+    return (struct acpi_madt *)acpi_find_table(MADT_SIG);
 }
 
 uint32_t get_madt_apic_base(void)
@@ -322,7 +322,7 @@ struct acpi_table_ioapic *get_acpi_ioapic_table(void)
 
 struct acpi_mcfg *get_acpi_mcfg_table(void)
 {
-    return (struct acpi_mcfg *)find_table(MCFG_SIG);
+    return (struct acpi_mcfg *)acpi_find_table(MCFG_SIG);
 }
 
 static bool write_to_reg(const tboot_acpi_generic_address_t *reg,

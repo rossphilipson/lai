@@ -22,8 +22,6 @@
 #ifndef __ACPI_H__
 #define __ACPI_H__
 
-//#define ACPI_DEBUG
-
 #define RSDP_SCOPE1_LOW    (void *)0x000000
 #define RSDP_SCOPE1_HIGH   (void *)0x000400
 #define RSDP_SCOPE2_LOW    (void *)0x0E0000
@@ -48,7 +46,7 @@ struct acpi_rsdp {
 	 * when rsdp_revision == 2
 	 */
 	u_int32_t	rsdp_length;		/* length of rsdp */
-	u_int64_t	rsdp_xsdt;			/* physical */
+	u_int64_t	rsdp_xsdt;		/* physical */
 	u_int8_t	rsdp_extchecksum;	/* entire table */
 	u_int8_t	rsdp_reserved[3];	/* must be zero */
 } __packed;
@@ -87,20 +85,20 @@ struct acpi_xsdt {
 /* Generic Address Structure */
 struct acpi_gas {
 	u_int8_t	address_space_id;
-#define GAS_SYSTEM_MEMORY		0
-#define GAS_SYSTEM_IOSPACE		1
-#define GAS_PCI_CFG_SPACE		2
-#define GAS_EMBEDDED			3
-#define GAS_SMBUS				4
+#define GAS_SYSTEM_MEMORY	0
+#define GAS_SYSTEM_IOSPACE	1
+#define GAS_PCI_CFG_SPACE	2
+#define GAS_EMBEDDED		3
+#define GAS_SMBUS		4
 #define GAS_FUNCTIONAL_FIXED	127
 	u_int8_t	register_bit_width;
 	u_int8_t	register_bit_offset;
 	u_int8_t	access_size;
 #define GAS_ACCESS_UNDEFINED	0
-#define GAS_ACCESS_BYTE			1
-#define GAS_ACCESS_WORD			2
-#define GAS_ACCESS_DWORD		3
-#define GAS_ACCESS_QWORD		4
+#define GAS_ACCESS_BYTE		1
+#define GAS_ACCESS_WORD		2
+#define GAS_ACCESS_DWORD	3
+#define GAS_ACCESS_QWORD	4
 	u_int64_t	address;
 } __packed;
 
@@ -110,14 +108,14 @@ struct acpi_fadt {
 #define	FADT_SIG	"FACP"
 
 	u_int32_t	firmware_ctl;	/* phys addr FACS */
-	u_int32_t	dsdt;			/* phys addr DSDT */
+	u_int32_t	dsdt;		/* phys addr DSDT */
 
   /* int_model is defined in ACPI 1.0, in ACPI 2.0, it should be zero */
-	u_int8_t	int_model;		/* interrupt model (hdr_revision < 3) */
+	u_int8_t	int_model;	/* interrupt model (hdr_revision < 3) */
 
 #define	FADT_INT_DUAL_PIC	0
 #define	FADT_INT_MULTI_APIC	1
-	u_int8_t	pm_profile;		/* power mgmt profile */
+	u_int8_t	pm_profile;	/* power mgmt profile */
 #define	FADT_PM_UNSPEC		0
 #define	FADT_PM_DESKTOP		1
 #define	FADT_PM_MOBILE		2
@@ -126,12 +124,12 @@ struct acpi_fadt {
 #define	FADT_PM_SOHO_SERVER	5
 #define	FADT_PM_APPLIANCE	6
 #define	FADT_PM_PERF_SERVER	7
-	u_int16_t	sci_int;		/* SCI interrupt */
-	u_int32_t	smi_cmd;		/* SMI command port */
+	u_int16_t	sci_int;	/* SCI interrupt */
+	u_int32_t	smi_cmd;	/* SMI command port */
 	u_int8_t	acpi_enable;	/* value to enable */
 	u_int8_t	acpi_disable;	/* value to disable */
-	u_int8_t	s4bios_req;		/* value for S4 */
-	u_int8_t	pstate_cnt;		/* value for performance (hdr_revision > 2) */
+	u_int8_t	s4bios_req;	/* value for S4 */
+	u_int8_t	pstate_cnt;	/* value for performance (hdr_revision > 2) */
 	u_int32_t	pm1a_evt_blk;	/* power management 1a */
 	u_int32_t	pm1b_evt_blk;	/* power mangement 1b */
 	u_int32_t	pm1a_cnt_blk;	/* pm control 1a */
@@ -147,7 +145,7 @@ struct acpi_fadt {
 	u_int8_t	gpe0_blk_len;
 	u_int8_t	gpe1_blk_len;
 	u_int8_t	gpe1_base;
-	u_int8_t	cst_cnt;		/* (hdr_revision > 2) */
+	u_int8_t	cst_cnt;	/* (hdr_revision > 2) */
 	u_int16_t	p_lvl2_lat;
 	u_int16_t	p_lvl3_lat;
 	u_int16_t	flush_size;
@@ -158,28 +156,28 @@ struct acpi_fadt {
 	u_int8_t	mon_alrm;
 	u_int8_t	century;
 	u_int16_t	iapc_boot_arch;	/* (hdr_revision > 2) */
-#define	FADT_LEGACY_DEVICES		0x0001	/* Legacy devices supported */
-#define	FADT_i8042				0x0002	/* Keyboard controller present */
-#define	FADT_NO_VGA				0x0004	/* Do not probe VGA */
+#define	FADT_LEGACY_DEVICES	0x0001	/* Legacy devices supported */
+#define	FADT_i8042		0x0002	/* Keyboard controller present */
+#define	FADT_NO_VGA		0x0004	/* Do not probe VGA */
 	u_int8_t	reserved1;
 	u_int32_t	flags;
-#define	FADT_WBINVD						0x00000001
-#define	FADT_WBINVD_FLUSH				0x00000002
-#define	FADT_PROC_C1					0x00000004
-#define	FADT_P_LVL2_UP					0x00000008
-#define	FADT_PWR_BUTTON					0x00000010
-#define	FADT_SLP_BUTTON					0x00000020
-#define	FADT_FIX_RTC					0x00000040
-#define	FADT_RTC_S4						0x00000080
-#define	FADT_TMR_VAL_EXT				0x00000100
-#define	FADT_DCK_CAP					0x00000200
-#define	FADT_RESET_REG_SUP				0x00000400
-#define	FADT_SEALED_CASE				0x00000800
-#define	FADT_HEADLESS					0x00001000
-#define	FADT_CPU_SW_SLP					0x00002000
-#define	FADT_PCI_EXP_WAK				0x00004000
-#define	FADT_USE_PLATFORM_CLOCK			0x00008000
-#define	FADT_S4_RTC_STS_VALID			0x00010000
+#define	FADT_WBINVD			0x00000001
+#define	FADT_WBINVD_FLUSH		0x00000002
+#define	FADT_PROC_C1			0x00000004
+#define	FADT_P_LVL2_UP			0x00000008
+#define	FADT_PWR_BUTTON			0x00000010
+#define	FADT_SLP_BUTTON			0x00000020
+#define	FADT_FIX_RTC			0x00000040
+#define	FADT_RTC_S4			0x00000080
+#define	FADT_TMR_VAL_EXT		0x00000100
+#define	FADT_DCK_CAP			0x00000200
+#define	FADT_RESET_REG_SUP		0x00000400
+#define	FADT_SEALED_CASE		0x00000800
+#define	FADT_HEADLESS			0x00001000
+#define	FADT_CPU_SW_SLP			0x00002000
+#define	FADT_PCI_EXP_WAK		0x00004000
+#define	FADT_USE_PLATFORM_CLOCK		0x00008000
+#define	FADT_S4_RTC_STS_VALID		0x00010000
 #define	FADT_REMOTE_POWER_ON_CAPABLE	0x00020000
 #define	FADT_FORCE_APIC_CLUSTER_MODEL	0x00040000
 #define	FADT_FORCE_APIC_PHYS_DEST_MODE	0x00080000
@@ -248,13 +246,13 @@ struct acpi_madt_override {
 	u_int32_t	global_int;
 	u_int16_t	flags;
 #define	ACPI_OVERRIDE_POLARITY_BITS	0x3
-#define	ACPI_OVERRIDE_POLARITY_BUS		0x0
-#define	ACPI_OVERRIDE_POLARITY_HIGH		0x1
-#define	ACPI_OVERRIDE_POLARITY_LOW		0x3
+#define	ACPI_OVERRIDE_POLARITY_BUS	0x0
+#define	ACPI_OVERRIDE_POLARITY_HIGH	0x1
+#define	ACPI_OVERRIDE_POLARITY_LOW	0x3
 #define	ACPI_OVERRIDE_TRIGGER_BITS	0xc
-#define	ACPI_OVERRIDE_TRIGGER_BUS		0x0
-#define	ACPI_OVERRIDE_TRIGGER_EDGE		0x4
-#define	ACPI_OVERRIDE_TRIGGER_LEVEL		0xc
+#define	ACPI_OVERRIDE_TRIGGER_BUS	0x0
+#define	ACPI_OVERRIDE_TRIGGER_EDGE	0x4
+#define	ACPI_OVERRIDE_TRIGGER_LEVEL	0xc
 } __packed;
 
 struct acpi_madt_nmi {
@@ -276,7 +274,7 @@ struct acpi_madt_lapic_nmi {
 
 struct acpi_madt_lapic_override {
 	u_int8_t	apic_type;
-#define	ACPI_MADT_LAPIC_OVERRIDE	5
+#define	ACPI_MADT_LAPIC_OVERRID	5
 	u_int8_t	length;
 	u_int16_t	reserved;
 	u_int64_t	lapic_address;
@@ -389,8 +387,6 @@ struct acpi_mcfg {
 } __packed;
 typedef struct acpi_mcfg acpi_table_mcfg_t;
 
-#if 0
-
 #define ACPI_FREQUENCY	3579545		/* Per ACPI spec */
 
 /*
@@ -443,7 +439,6 @@ typedef struct acpi_mcfg acpi_table_mcfg_t;
 #define ACPI_PM2_CONTROL		0x06
 #define	ACPI_PM2_ARB_DIS		0x0001
 
-
 /*
  * Sleeping States
  */
@@ -483,27 +478,27 @@ typedef struct acpi_mcfg acpi_table_mcfg_t;
 #define ACPI_DEV_PD	"ACPI0007"	/* Processor Device */
 #define ACPI_DEV_ALSD	"ACPI0008"	/* Ambient Light Sensor Device */
 #define ACPI_DEV_IOXA	"ACPI0009"	/* IO x APIC Device */
-#define ACPI_DEV_IOA	"ACPI000A"/	/* IO APIC Device */
+#define ACPI_DEV_IOA	"ACPI000A"	/* IO APIC Device */
 #define ACPI_DEV_IOSA	"ACPI000B"	/* IO SAPIC Device */
 #define ACPI_DEV_THZ	"THERMALZONE"	/* Thermal Zone */
 #define ACPI_DEV_FFB	"FIXEDBUTTON"	/* Fixed Feature Button */
 #define ACPI_DEV_ASUS	"ASUS010"	/* ASUS Hotkeys */
 #define ACPI_DEV_THINKPAD "IBM0068"	/* ThinkPad support */
 
-#endif
+struct acpi_rsdp *get_rsdp(void);
+struct acpi_table_header *acpi_find_table(const char *table_name);
+struct acpi_table_ioapic *get_acpi_ioapic_table(void);
+struct acpi_mcfg *get_acpi_mcfg_table(void);
+uint32_t get_madt_apic_base(void);
 
 bool save_vtd_dmar_table(void);
 bool restore_vtd_dmar_table(void);
 bool remove_vtd_dmar_table(void);
 
-struct acpi_table_ioapic *get_acpi_ioapic_table(void);
-struct acpi_mcfg *get_acpi_mcfg_table(void);
 void disable_smis(void);
 
 bool machine_sleep(const tboot_acpi_sleep_info_t *);
 void set_s3_resume_vector(const tboot_acpi_sleep_info_t *, uint64_t);
-struct acpi_rsdp *get_rsdp(void);
-uint32_t get_madt_apic_base(void);
 
 #endif	/* __ACPI_H__ */
 
