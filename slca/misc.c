@@ -47,7 +47,6 @@
 #include <ctype.h>
 #include <misc.h>
 #include <tb_error.h>
-#include <txt/txt.h>
 
 /*
  * if 'prefix' != NULL, print it before each line of hex string

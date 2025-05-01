@@ -45,7 +45,6 @@
 #include <pe.h>
 #include <tb_error.h>
 #include <tboot.h>
-#include <txt/txt.h>
 
 #define MAX_RAMMEM_BLOCKS 128
 #define MEM_NONE  0

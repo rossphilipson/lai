@@ -49,8 +49,6 @@
 #include <tb_error.h>
 #include <tboot.h>
 #include <mle.h>
-#include <txt/mtrrs.h>
-#include <txt/config_regs.h>
 
 /*
  * copy of original command line
