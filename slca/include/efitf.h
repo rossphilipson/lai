@@ -65,12 +65,12 @@ typedef struct __packed {
 #endif /* NO_EFITF_LOGLVL */
 
 
-#define TB_SHUTDOWN_REBOOT      0
-#define TB_SHUTDOWN_S5          1
-#define TB_SHUTDOWN_S4          2
-#define TB_SHUTDOWN_S3          3
-#define TB_SHUTDOWN_HALT        4
-#define TB_SHUTDOWN_WFS         5
+#define SHUTDOWN_REBOOT      0
+#define SHUTDOWN_S5          1
+#define SHUTDOWN_S4          2
+#define SHUTDOWN_S3          3
+#define SHUTDOWN_HALT        4
+#define SHUTDOWN_WFS         5
 
 #define EFITF_MEM_LOG_SIZE   0x8000
 

@@ -49,14 +49,14 @@
 #define MAC_VIRT_END		(MAC_VIRT_START + MAC_VIRT_SIZE)
 
 /* PAE with 2-Mbyte Pages */
-#define TB_PAGETABLE_ORDER		9
-#define TB_L1_PAGETABLE_ENTRIES		(1 << TB_PAGETABLE_ORDER)
-#define TB_L2_PAGETABLE_ENTRIES		(1 << TB_PAGETABLE_ORDER)
+#define PAGETABLE_ORDER		9
+#define L1_PAGETABLE_ENTRIES		(1 << PAGETABLE_ORDER)
+#define L2_PAGETABLE_ENTRIES		(1 << PAGETABLE_ORDER)
 
-#define TB_L1_PAGETABLE_SHIFT		21
-#define TB_L2_PAGETABLE_SHIFT		30
+#define L1_PAGETABLE_SHIFT		21
+#define L2_PAGETABLE_SHIFT		30
 
-#define MAC_PAGE_SIZE			(1UL << TB_L1_PAGETABLE_SHIFT)
+#define MAC_PAGE_SIZE			(1UL << L1_PAGETABLE_SHIFT)
 #define MAC_PAGE_MASK			(~(MAC_PAGE_SIZE - 1))
 
 #define _PAGE_PRESENT                   0x01
@@ -64,17 +64,17 @@
 #define _PAGE_SIZE			0x80
 
 
-#define MAKE_TB_PDE(paddr)	\
+#define MAKE_PDE(paddr)	\
 	(((uint64_t)(paddr) & ~0x00000000001FFFFF) | _PAGE_PRESENT \
 			| _PAGE_RW | _PAGE_SIZE)
-#define MAKE_TB_PDPTE(paddr)	\
+#define MAKE_PDPTE(paddr)	\
 	(((uint64_t)(paddr) & ~0x0000000000000FFF) | _PAGE_PRESENT)
 
 /* Given a virtual address, get an entry offset into a page table. */
 #define pd_table_offset(a)	\
-	(((a) >> TB_L1_PAGETABLE_SHIFT) & (TB_L1_PAGETABLE_ENTRIES - 1))
+	(((a) >> L1_PAGETABLE_SHIFT) & (L1_PAGETABLE_ENTRIES - 1))
 #define pdptr_table_offset(a)	\
-	(((a) >> TB_L2_PAGETABLE_SHIFT) & (TB_L2_PAGETABLE_ENTRIES - 1))
+	(((a) >> L2_PAGETABLE_SHIFT) & (L2_PAGETABLE_ENTRIES - 1))
 
 /* PAE: 52 bit physical address */
 #define PADDR_BIT			52

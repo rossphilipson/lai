@@ -308,9 +308,9 @@ void *efi_get_pe_export(const char *name, void *image_base)
 void efi_shutdown_system(uint32_t shutdown_type)
 {
     switch (shutdown_type) {
-    case TB_SHUTDOWN_S5:
+    case SHUTDOWN_S5:
         RT->ResetSystem(EfiResetShutdown, EFI_SUCCESS, 0, NULL);
-    case TB_SHUTDOWN_REBOOT:
+    case SHUTDOWN_REBOOT:
         RT->ResetSystem(EfiResetCold, EFI_SUCCESS, 0, NULL);
     defaut:
         ;
