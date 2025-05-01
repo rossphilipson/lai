@@ -37,13 +37,13 @@
 #include <types.h>
 #include <stdbool.h>
 #include <stdarg.h>
-#include <compiler.h>
 #include <string.h>
 #include <mutex.h>
 #include <misc.h>
 #include <printk.h>
 #include <eficore.h>
 #include <cmdline.h>
+#include <efitf.h>
 #include <tb_error.h>
 #include <tboot.h>
 

@@ -37,7 +37,7 @@
 #include <misc.h>
 #include <mutex.h>
 #include <io.h>
-#include <pci_cfgreg.h>
+#include <pci.h>
 #include <com.h>
 
 #define COMC_TXWAIT	0x40000		/* transmit timeout */
@@ -108,11 +108,11 @@ static void comc_pci_setup(void)
 
         mtx_init(&pcicfg_mtx);
     }
-}               
+}
 
 void comc_init(void)
 {
-    comc_pci_setup(); 
+    comc_pci_setup();
     comc_setup(g_com_port.comc_curspeed);
 }
 

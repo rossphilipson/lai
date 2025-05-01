@@ -39,7 +39,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include <misc.h>
-#include <compiler.h>
+#include <efitf.h>
 
 static bool div64(uint64_t num, uint32_t base, uint64_t *quot, uint32_t *rem)
 {

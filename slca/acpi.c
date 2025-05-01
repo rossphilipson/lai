@@ -48,7 +48,7 @@
 #include <misc.h>
 #include <cmdline.h>
 #include <eficore.h>
-#include <pci_cfgreg.h>
+#include <pci.h>
 
 #ifdef ACPI_DEBUG
 #define acpi_printk         printk
@@ -455,7 +455,7 @@ bool machine_sleep(const tboot_acpi_sleep_info_t *acpi_sinfo)
 
     /* just to wait, the machine may shutdown before here */
     wait_to_sleep(acpi_sinfo);
-    return true; 
+    return true;
 }
 
 void set_s3_resume_vector(const tboot_acpi_sleep_info_t *acpi_sinfo,

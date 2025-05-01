@@ -39,7 +39,7 @@
 #include <types.h>
 #include <mutex.h>
 #include <io.h>
-#include <pci_cfgreg.h>
+#include <pci.h>
 
 enum {
 	CFGMECH_NONE = 0,
@@ -51,7 +51,7 @@ enum {
 struct mutex pcicfg_mtx;
 static const int cfgmech = CFGMECH_1;
 
-/* 
+/*
  * Configuration space access using direct register operations
  */
 
