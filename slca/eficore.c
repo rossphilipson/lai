@@ -42,7 +42,7 @@
 #include <eficore.h>
 #include <pe.h>
 #include <tb_error.h>
-#include <tboot.h>
+#include <efitf.h>
 
 /* Global Table Pointers */
 EFI_SYSTEM_TABLE        *ST;

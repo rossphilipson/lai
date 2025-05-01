@@ -44,7 +44,7 @@
 #include <eficore.h>
 #include <cmdline.h>
 #include <tb_error.h>
-#include <tboot.h>
+#include <efitf.h>
 
 uint8_t g_log_level = TBOOT_LOG_LEVEL_NONE;
 uint8_t g_log_targets = TBOOT_LOG_TARGET_NONE;

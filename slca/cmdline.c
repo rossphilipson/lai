@@ -45,7 +45,7 @@
 #include <cmdline.h>
 #include <eficore.h>
 #include <tb_error.h>
-#include <tboot.h>
+#include <efitf.h>
 
 /*
  * copy of original command line
