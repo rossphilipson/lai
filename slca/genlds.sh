@@ -6,7 +6,7 @@ if [ "$1" == "gcc" ]; then
     RO_DATA_SECTION=".rodata"
 fi
 
-cat << EOF >> slca.lds
+cat << EOF >> efitf.lds
 SECTIONS
 {
   .text : {

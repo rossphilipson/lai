@@ -32,12 +32,12 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <config.h>
 #include <efibase.h>
 #include <types.h>
 #include <stdbool.h>
 #include <stdarg.h>
 #include <string.h>
+#include <compiler.h>
 #include <mutex.h>
 #include <misc.h>
 #include <printk.h>

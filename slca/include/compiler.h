@@ -38,6 +38,21 @@
 
 #define inline        __inline__
 #define always_inline __inline__ __attribute__ ((always_inline))
+#define __maybe_unused  __attribute__ ((unused))
+
+#ifndef __packed
+#define __packed   __attribute__ ((packed))
+#endif
+
+#define COMPILE_TIME_ASSERT(e)                 \
+{                                              \
+    struct tmp {                               \
+        int a : ((e) ? 1 : -1);                \
+    };                                         \
+}
+
+#define __data     __attribute__ ((__section__ (".data#")))
+#define __text     __attribute__ ((__section__ (".text#")))
 
 #endif    /* __COMPILER_H__ */
 

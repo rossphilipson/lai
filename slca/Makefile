@@ -17,10 +17,10 @@ CFLAGS += -DTBOOT_CHANGESET=\""$(shell ((hg parents --template "{isodate|isodate
 
 
 .PHONY: all
-all: slca.lds slca.efi slca.dsm
+all: efitf.lds efitf.efi efitf.dsm
 
-slca.efi: $(OBJ)
-	$(LD) slca.lds $(LDFLAGS) $^ -o $@
+efitf.efi: $(OBJ)
+	$(LD) efitf.lds $(LDFLAGS) $^ -o $@
 
 # Grrr someone is frobbing the stack
 tpm_20.o: tpm_20.c
@@ -32,12 +32,12 @@ tpm_20.o: tpm_20.c
 %.o: %.S
 	$(CC) $(AFLAGS) -c $< -o $@
 
-slca.lds:
+efitf.lds:
 	$(PWD)/genlds.sh $(CC)
 
-slca.dsm:
-	mingw-objdump -d slca.efi > slca.dsm
+efitf.dsm:
+	mingw-objdump -d efitf.efi > efitf.dsm
 
 .PHONY: clean
 clean:
-	rm -f slca.efi *.o slca.dsm slca.lds
+	rm -f efitf.efi *.o efitf.dsm efitf.lds

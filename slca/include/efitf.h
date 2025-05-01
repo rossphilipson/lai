@@ -1,7 +1,4 @@
 /*
- * tboot.h: shared data structure with MLE and kernel and functions
- *          used by kernel for runtime support
- *
  * Copyright (c) 2006-2010, Intel Corporation
  * All rights reserved.
  *
@@ -33,96 +30,40 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-#ifndef __TBOOT_H__
-#define __TBOOT_H__
+#ifndef __EFITF_H__
+#define __EFITF_H__
 
-#ifndef __packed
-#define __packed   __attribute__ ((packed))
-#endif
-
-#define TB_CURRENT_VER          7
+#define EFITF_MAX_IMAGE_MEM 0xfffff000
 
 /* define uuid_t here in case uuid.h wasn't pre-included */
 /* (i.e. so tboot.h can be self-sufficient) */
 #ifndef __UUID_H__
 typedef struct __packed {
-  uint32_t    data1;
-  uint16_t    data2;
-  uint16_t    data3;
-  uint16_t    data4;
-  uint8_t     data5[6];
+    uint32_t    data1;
+    uint16_t    data2;
+    uint16_t    data3;
+    uint16_t    data4;
+    uint8_t     data5[6];
 } uuid_t;
 #endif
 
-/*
- * used to communicate between tboot and the launched kernel (i.e. Xen)
- */
+/* Log level */
+#ifdef NO_TBOOT_LOGLVL
+#define TBOOT_NONE
+#define TBOOT_ERR
+#define TBOOT_WARN
+#define TBOOT_INFO
+#define TBOOT_DETA
+#define TBOOT_ALL
+#else /* NO_TBOOT_LOGLVL */
+#define TBOOT_NONE       "<0>"
+#define TBOOT_ERR        "<1>"
+#define TBOOT_WARN       "<2>"
+#define TBOOT_INFO       "<3>"
+#define TBOOT_DETA       "<4>"
+#define TBOOT_ALL        "<5>"
+#endif /* NO_TBOOT_LOGLVL */
 
-#define TB_KEY_SIZE             64   /* 512 bits */
-
-#define MAX_TB_MAC_REGIONS      32
-typedef struct __packed {
-    uint64_t  start;         /* must be 4k byte -aligned */
-    uint32_t  size;          /* must be 4k byte -granular */
-} tboot_mac_region_t;
-
-/* GAS - Generic Address Structure (ACPI 2.0+) */
-typedef struct __packed {
-    uint8_t  space_id;         /* only 0,1 (memory, I/O) are supported */
-    uint8_t  bit_width;
-    uint8_t  bit_offset;
-    uint8_t  access_width;     /* only 1-3 (byte, word, dword) are supported */
-    uint64_t address;
-} tboot_acpi_generic_address_t;
-
-typedef struct __packed {
-    tboot_acpi_generic_address_t pm1a_cnt_blk;
-    tboot_acpi_generic_address_t pm1b_cnt_blk;
-    tboot_acpi_generic_address_t pm1a_evt_blk;
-    tboot_acpi_generic_address_t pm1b_evt_blk;
-    uint16_t pm1a_cnt_val;
-    uint16_t pm1b_cnt_val;
-    uint64_t wakeup_vector;
-    uint32_t vector_width;
-    uint64_t kernel_s3_resume_vector;
-} tboot_acpi_sleep_info_t;
-
-#define TB_RESMEM_BLOCKS        128
-
-typedef struct __packed {
-    uint64_t addr;
-    uint64_t length;
-} reserve_map_t;
-
-typedef struct __packed {
-    /* version 3+ fields: */
-    uuid_t    uuid;              /* {663C8DFF-E8B3-4b82-AABF-19EA4D057A08} */
-    uint32_t  version;           /* currently 7 for EFI support */
-    uint32_t  log_addr;          /* physical addr of log or NULL if none */
-    uint32_t  shutdown_entry;    /* entry point for tboot shutdown */
-    uint32_t  shutdown_type;     /* type of shutdown (TB_SHUTDOWN_*) */
-    tboot_acpi_sleep_info_t
-              acpi_sinfo;        /* where kernel put acpi sleep info in Sx */
-    uint32_t  tboot_base;        /* starting addr for tboot */
-    uint32_t  tboot_size;        /* size of tboot */
-    uint8_t   num_mac_regions;   /* number mem regions to MAC on S3 */
-                                 /* contig regions memory to MAC on S3 */
-    tboot_mac_region_t mac_regions[MAX_TB_MAC_REGIONS];
-    /* version 4+ fields: */
-                                 /* populated by tboot; will be encrypted */
-    uint8_t   s3_key[TB_KEY_SIZE];
-    /* version 5+ fields: */
-    uint8_t   reserved_align[3]; /* used to 4byte-align num_in_wfs */
-    uint32_t  num_in_wfs;        /* number of processors in wait-for-SIPI */
-    /* version 6+ fields: */
-    uint32_t  flags;
-    uint64_t  ap_wake_addr;      /* phys addr of kernel/VMM SIPI vector */
-    uint32_t  ap_wake_trigger;   /* kernel/VMM writes APIC ID to wake AP */
-    /* version 7+ fields */
-                                 /* reserve mem blocks to adjust dom0 E820 */
-    uint64_t      reserve_map_count;
-    reserve_map_t reserve_map[TB_RESMEM_BLOCKS];
-} tboot_shared_t;
 
 #define TB_SHUTDOWN_REBOOT      0
 #define TB_SHUTDOWN_S5          1
@@ -131,13 +72,8 @@ typedef struct __packed {
 #define TB_SHUTDOWN_HALT        4
 #define TB_SHUTDOWN_WFS         5
 
-#define TB_FLAG_AP_WAKE_SUPPORT   0x00000001  /* kernel/VMM use INIT-SIPI-SIPI
-                                                 if clear, ap_wake_* if set */
-
-/* {663C8DFF-E8B3-4b82-AABF-19EA4D057A08} */
-#define TBOOT_SHARED_UUID    {0x663c8dff, 0xe8b3, 0x4b82, 0xaabf, \
-                                 {0x19, 0xea, 0x4d, 0x5, 0x7a, 0x8 }}
 #define TBOOT_MEM_LOG_SIZE   0x8000
+
 /*
  * used to log tboot printk output
  */
@@ -153,38 +89,7 @@ typedef struct {
 #define TBOOT_LOG_UUID   {0xc0192526, 0x6b30, 0x4db4, 0x844c, \
                              {0xa3, 0xe9, 0x53, 0xb8, 0x81, 0x74 }}
 
-/* The TBOOT shared structure in RT mem */
-tboot_shared_t *_tboot_shared;
-
-long s3_flag;
-
-static inline void print_tboot_shared(const tboot_shared_t *tboot_shared)
-{
-    printk(TBOOT_DETA"tboot_shared data:\n");
-    printk(TBOOT_DETA"\t version: %d\n", tboot_shared->version);
-    printk(TBOOT_DETA"\t log_addr: 0x%08x\n", tboot_shared->log_addr);
-    printk(TBOOT_DETA"\t shutdown_entry: 0x%08x\n", tboot_shared->shutdown_entry);
-    printk(TBOOT_DETA"\t shutdown_type: %d\n", tboot_shared->shutdown_type);
-    printk(TBOOT_DETA"\t tboot_base: 0x%08x\n", tboot_shared->tboot_base);
-    printk(TBOOT_DETA"\t tboot_size: 0x%x\n", tboot_shared->tboot_size);
-    printk(TBOOT_DETA"\t num_in_wfs: %u\n", tboot_shared->num_in_wfs);
-    printk(TBOOT_DETA"\t flags: 0x%8.8x\n", tboot_shared->flags);
-    printk(TBOOT_DETA"\t ap_wake_addr: 0x%08x\n", (uint32_t)tboot_shared->ap_wake_addr);
-    printk(TBOOT_DETA"\t ap_wake_trigger: %u\n", tboot_shared->ap_wake_trigger);
-}
-
-void begin_initial_launch(void);
-void begin_launch(efi_xen_tboot_data_t *xtd);
-void s3_launch(void);
-void shutdown(void);
-void cpu_wakeup(uint32_t cpuid, uint64_t sipi_vec);
-
-/* policy */
-void verify_all_modules(void);
-void apply_policy(tb_error_t error);
-tb_error_t set_policy(void);
-
-#endif    /* __TBOOT_H__ */
+#endif /* __EFITF_H__ */
 
 /*
  * Local variables:

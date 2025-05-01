@@ -32,11 +32,11 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <config.h>
 #include <efibase.h>
 #include <types.h>
 #include <stdbool.h>
 #include <string.h>
+#include <compiler.h>
 #include <misc.h>
 #include <io.h>
 #include <vga.h>

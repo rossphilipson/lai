@@ -485,6 +485,27 @@ typedef struct acpi_mcfg acpi_table_mcfg_t;
 #define ACPI_DEV_ASUS	"ASUS010"	/* ASUS Hotkeys */
 #define ACPI_DEV_THINKPAD "IBM0068"	/* ThinkPad support */
 
+/* GAS - Generic Address Structure (ACPI 2.0+) */
+typedef struct __packed {
+    uint8_t  space_id;         /* only 0,1 (memory, I/O) are supported */
+    uint8_t  bit_width;
+    uint8_t  bit_offset;
+    uint8_t  access_width;     /* only 1-3 (byte, word, dword) are supported */
+    uint64_t address;
+} tboot_acpi_generic_address_t;
+
+typedef struct __packed {
+    tboot_acpi_generic_address_t pm1a_cnt_blk;
+    tboot_acpi_generic_address_t pm1b_cnt_blk;
+    tboot_acpi_generic_address_t pm1a_evt_blk;
+    tboot_acpi_generic_address_t pm1b_evt_blk;
+    uint16_t pm1a_cnt_val;
+    uint16_t pm1b_cnt_val;
+    uint64_t wakeup_vector;
+    uint32_t vector_width;
+    uint64_t kernel_s3_resume_vector;
+} tboot_acpi_sleep_info_t;
+
 struct acpi_rsdp *get_rsdp(void);
 struct acpi_table_header *acpi_find_table(const char *table_name);
 struct acpi_table_ioapic *get_acpi_ioapic_table(void);

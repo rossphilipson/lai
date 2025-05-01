@@ -33,7 +33,10 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <config.h>
+#define ENTRY(name)                             \
+  .globl name;                                  \
+  .align 16,0x90;                               \
+  name:
 
 #define REF(x) x(%rip)
 

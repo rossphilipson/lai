@@ -36,7 +36,6 @@
 /* $FreeBSD: src/sys/libkern/strtoul.c,v 1.6.32.1 2010/02/10 00:26:20 kensmith Exp $ */
 /* $FreeBSD: src/sys/libkern/memcmp.c,v 1.1 2008/09/23 14:45:10 obrien Exp $ */
 
-#include <config.h>
 #include <efibase.h>
 #include <ctype.h>
 #include <string.h>

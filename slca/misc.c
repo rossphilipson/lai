@@ -33,12 +33,11 @@
  *
  */
 
-#include <config.h>
 #include <efibase.h>
 #include <types.h>
 #include <stdbool.h>
-#include <printk.h>
 #include <compiler.h>
+#include <printk.h>
 #include <processor.h>
 #include <atomic.h>
 #include <io.h>
@@ -47,6 +46,7 @@
 #include <ctype.h>
 #include <misc.h>
 #include <tb_error.h>
+#include <efitf.h>
 
 /*
  * if 'prefix' != NULL, print it before each line of hex string

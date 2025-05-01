@@ -30,10 +30,10 @@
  * sys/boot/i386/libi386/comconsole.c
  */
 
-#include <config.h>
 #include <efibase.h>
 #include <types.h>
 #include <stdbool.h>
+#include <compiler.h>
 #include <misc.h>
 #include <mutex.h>
 #include <io.h>

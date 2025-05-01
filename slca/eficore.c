@@ -33,10 +33,10 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#include <config.h>
 #include <efibase.h>
 #include <stdbool.h>
 #include <string.h>
+#include <compiler.h>
 #include <page.h>
 #include <printk.h>
 #include <eficore.h>
@@ -522,7 +522,7 @@ EFI_STATUS efi_read_file(EFI_FILE_IO_INTERFACE *file_system,
     EFI_FILE_INFO        *file_info;
     EFI_STATUS            status = EFI_SUCCESS;
     uint64_t              size;
-    EFI_PHYSICAL_ADDRESS  addr = TBOOT_MAX_IMAGE_MEM;
+    EFI_PHYSICAL_ADDRESS  addr = EFITF_MAX_IMAGE_MEM;
     char                 *print_name = wtoa_alloc(file_name);
 
     *size_out = 0;

@@ -36,9 +36,6 @@
 #ifndef __TYPES_H__
 #define __TYPES_H__
 
-/* Need for other later defines. */
-#include <config.h>
-
 #ifndef NULL
 #define NULL ((void*)0)
 #endif
@@ -68,7 +65,6 @@ typedef uint16_t            wchar_t;
 /*
  * This is specifically for IA32.
  */
-/* TODO building for x64 now */
 #if !defined(__GNUC__)
 typedef unsigned long long  uintptr_t;
 typedef unsigned long long  uint64_t;

@@ -34,7 +34,6 @@
  * Portions copyright (c) 2010, Intel Corporation
  */
 
-#include <config.h>
 #include <efibase.h>
 #include <types.h>
 #include <mutex.h>

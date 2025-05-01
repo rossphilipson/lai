@@ -33,7 +33,6 @@
  *
  */
 
-#include <config.h>
 #include <efibase.h>
 #include <types.h>
 #include <stdbool.h>
