@@ -43,8 +43,6 @@
 #include <eficore.h>
 #include <eficonfig.h>
 #include <uuid.h>
-#include <hash.h>
-#include <mle.h>
 #include <tb_error.h>
 #include <tboot.h>
 

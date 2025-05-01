@@ -53,7 +53,6 @@ void get_tboot_min_ram(void);
 bool get_tboot_call_racm(void);
 bool get_tboot_call_racm_check(void);
 bool get_tboot_measure_nv(void);
-void get_tboot_extpol(void);
 
 /* for parse cmdline of linux kernel, say vga and mem */
 void linux_parse_cmdline(const char *cmdline);
