@@ -276,6 +276,7 @@ void get_tboot_log_targets(void)
             g_log_targets |= TBOOT_LOG_TARGET_SERIAL;
             targets += 6;
         }
+/* TODO
         else if ( strncmp(targets, "vga", 3) == 0 && efi_is_postebs() ) {
             g_log_targets |= TBOOT_LOG_TARGET_VGA;
             targets += 3;
@@ -284,7 +285,8 @@ void get_tboot_log_targets(void)
             g_log_targets |= TBOOT_LOG_TARGET_EFI;
             targets += 3;
         }
-        else 
+*/
+        else
             break; /* unrecognized, end loop */
 
         if ( *targets == ',' )
