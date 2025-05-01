@@ -65,30 +65,6 @@ EFI_GUID Acpi20TableGuid;
 EFI_GUID SMBIOSTableGuid;
 EFI_GUID TbootXenGuid;
 
-/* TODO maybe take resmap out of shared and pass a 2nd param? */
-
-typedef void (*post_launch_t)(void *ets);
-
-typedef struct __packed efi_xen_tboot_data {
-    void *kernel;
-    uint64_t kernel_size;
-    void *ramdisk;
-    uint64_t ramdisk_size;
-    void *memory_map;
-    uint64_t memory_map_size;
-    uint64_t memory_desc_size;
-    uint64_t post_launch_cb;
-} efi_xen_tboot_data_t;
-
-typedef void (*begin_launch_t)(efi_xen_tboot_data_t *xtd);
-
-typedef struct __packed efi_tboot_xen_var {
-    uint64_t revision;
-    const char *xen_config;
-    uint64_t xen_config_size;
-    uint64_t begin_launch_cb;
-} efi_tboot_xen_var_t;
-
 /* The following routines are available before and after EBS */
 
 void atow(wchar_t *dst, const char *src, uint64_t count);

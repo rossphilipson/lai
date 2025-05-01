@@ -67,7 +67,7 @@ typedef struct {
  */
 
 /* global option array for command line */
-static const cmdline_option_t g_tboot_cmdline_options[] = {
+static const cmdline_option_t g_cmdline_options[] = {
     { "loglvl",     "all" },         /* all|err,warn,info|none */
     { "logging",    "serial,vga,efi" },  /* vga,serial,memory,efi|none */
     { "serial",     "115200,8n1,0x3f8" },
@@ -75,7 +75,7 @@ static const cmdline_option_t g_tboot_cmdline_options[] = {
     { "vga_delay",  "0" },           /* # secs */
     { NULL, NULL }
 };
-static char g_tboot_param_values[ARRAY_SIZE(g_tboot_cmdline_options)][MAX_VALUE_LEN];
+static char g_param_values[ARRAY_SIZE(g_cmdline_options)][MAX_VALUE_LEN];
 
 static const cmdline_option_t g_linux_cmdline_options[] = {
     { "vga", "" },
@@ -166,12 +166,12 @@ static void cmdline_parse(const char *cmdline, const cmdline_option_t *options,
     }
 }
 
-void tboot_parse_cmdline(bool defaults)
+void parse_cmdline(bool defaults)
 {
     if (!defaults)
-        cmdline_parse(g_cmdline, g_tboot_cmdline_options, g_tboot_param_values);
+        cmdline_parse(g_cmdline, g_cmdline_options, g_param_values);
     else
-        cmdline_parse(NULL, g_tboot_cmdline_options, g_tboot_param_values);
+        cmdline_parse(NULL, g_cmdline_options, g_param_values);
 }
 
 void linux_parse_cmdline(const char *cmdline)
@@ -195,10 +195,10 @@ uint8_t get_loglvl_prefix(char **pbuf, int *len)
     return log_level;
 }
 
-void get_tboot_loglvl(void)
+void get_loglvl(void)
 {
-    const char *loglvl = get_option_val(g_tboot_cmdline_options,
-                                        g_tboot_param_values, "loglvl");
+    const char *loglvl = get_option_val(g_cmdline_options,
+                                        g_param_values, "loglvl");
     if ( loglvl == NULL )
         return;
 
@@ -238,10 +238,10 @@ void get_tboot_loglvl(void)
     }
 }
 
-void get_tboot_log_targets(void)
+void get_log_targets(void)
 {
-    const char *targets = get_option_val(g_tboot_cmdline_options,
-                                         g_tboot_param_values, "logging");
+    const char *targets = get_option_val(g_cmdline_options,
+                                         g_param_values, "logging");
 
     /* nothing set, leave defaults */
     if ( targets == NULL || *targets == '\0' )
@@ -420,20 +420,20 @@ static bool parse_serial_param(const char *com)
     return true;
 }
 
-bool get_tboot_serial(void)
+bool get_serial(void)
 {
-    const char *serial = get_option_val(g_tboot_cmdline_options,
-                                        g_tboot_param_values, "serial");
+    const char *serial = get_option_val(g_cmdline_options,
+                                        g_param_values, "serial");
     if ( serial == NULL || *serial == '\0' )
         return false;
 
     return parse_serial_param(serial);
 }
 
-void get_tboot_vga_delay(void)
+void get_vga_delay(void)
 {
-    const char *vga_delay = get_option_val(g_tboot_cmdline_options,
-                                           g_tboot_param_values, "vga_delay");
+    const char *vga_delay = get_option_val(g_cmdline_options,
+                                           g_param_values, "vga_delay");
     if ( vga_delay == NULL )
         return;
 

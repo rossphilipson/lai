@@ -59,7 +59,7 @@ static struct acpi_table_header *g_dmar_table;
 static __data bool g_hide_dmar;
 
 static void dump_gas(const char *reg_name,
-                     const tboot_acpi_generic_address_t *reg)
+                     const acpi_generic_address_t *reg)
 {
     const char *space_id[] = { "memory", "I/O", "PCI config space", "EC",
                                "SMBus" };
@@ -323,7 +323,7 @@ struct acpi_mcfg *get_acpi_mcfg_table(void)
     return (struct acpi_mcfg *)acpi_find_table(MCFG_SIG);
 }
 
-static bool write_to_reg(const tboot_acpi_generic_address_t *reg,
+static bool write_to_reg(const acpi_generic_address_t *reg,
                          uint32_t val)
 {
     if ( reg->address >= 100000000ULL ) {
@@ -369,7 +369,7 @@ static bool write_to_reg(const tboot_acpi_generic_address_t *reg,
     return false;
 }
 
-static bool read_from_reg(const tboot_acpi_generic_address_t *reg,
+static bool read_from_reg(const acpi_generic_address_t *reg,
                           uint32_t *val)
 {
     if ( reg->address >= 100000000ULL ) {
@@ -414,7 +414,7 @@ static bool read_from_reg(const tboot_acpi_generic_address_t *reg,
     return false;
 }
 
-static void wait_to_sleep(const tboot_acpi_sleep_info_t *acpi_sinfo)
+static void wait_to_sleep(const acpi_sleep_info_t *acpi_sinfo)
 {
 #define WAKE_STATUS    0x8000    /* the 15th bit */
     while ( true ) {
@@ -434,7 +434,7 @@ static void wait_to_sleep(const tboot_acpi_sleep_info_t *acpi_sinfo)
     }
 }
 
-bool machine_sleep(const tboot_acpi_sleep_info_t *acpi_sinfo)
+bool machine_sleep(const acpi_sleep_info_t *acpi_sinfo)
 {
     dump_gas("PM1A", &acpi_sinfo->pm1a_cnt_blk);
     dump_gas("PM1B", &acpi_sinfo->pm1b_cnt_blk);
@@ -456,7 +456,7 @@ bool machine_sleep(const tboot_acpi_sleep_info_t *acpi_sinfo)
     return true;
 }
 
-void set_s3_resume_vector(const tboot_acpi_sleep_info_t *acpi_sinfo,
+void set_s3_resume_vector(const acpi_sleep_info_t *acpi_sinfo,
                           uint64_t resume_vector)
 {
     if ( acpi_sinfo->vector_width <= 32 )

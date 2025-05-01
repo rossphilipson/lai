@@ -102,13 +102,6 @@
 #define get_pdptre_flags(pdptre)	((int)(pdptre) & PDPTE_FLAG_MASK)
 #define get_pdptre_paddr(pdptre)	((pdptre) & PDPTE_PADDR_MASK)
 
-void map_pages_to_tboot(unsigned long vstart,
-                        unsigned long pfn,
-                        unsigned long nr_pfns);
-void destroy_tboot_mapping(unsigned long vstart, unsigned long vend);
-bool enable_paging(void);
-bool disable_paging(void);
-
 #endif /* __PAGING_H__ */
 
 /*

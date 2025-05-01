@@ -40,14 +40,14 @@
 char g_cmdline[CMDLINE_SIZE];
 
 
-void tboot_parse_cmdline(bool defaults);
-void get_tboot_loglvl(void);
-void get_tboot_log_targets(void);
-bool get_tboot_serial(void);
-void get_tboot_baud(void);
-void get_tboot_fmt(void);
-void get_tboot_vga_delay(void);
-bool get_tboot_measure_nv(void);
+void parse_cmdline(bool defaults);
+void get_loglvl(void);
+void get_log_targets(void);
+bool get_serial(void);
+void get_baud(void);
+void get_fmt(void);
+void get_vga_delay(void);
+bool get_measure_nv(void);
 
 /* for parse cmdline of linux kernel, say vga and mem */
 void linux_parse_cmdline(const char *cmdline);

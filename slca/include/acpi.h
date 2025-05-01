@@ -492,19 +492,19 @@ typedef struct __packed {
     uint8_t  bit_offset;
     uint8_t  access_width;     /* only 1-3 (byte, word, dword) are supported */
     uint64_t address;
-} tboot_acpi_generic_address_t;
+} acpi_generic_address_t;
 
 typedef struct __packed {
-    tboot_acpi_generic_address_t pm1a_cnt_blk;
-    tboot_acpi_generic_address_t pm1b_cnt_blk;
-    tboot_acpi_generic_address_t pm1a_evt_blk;
-    tboot_acpi_generic_address_t pm1b_evt_blk;
+    acpi_generic_address_t pm1a_cnt_blk;
+    acpi_generic_address_t pm1b_cnt_blk;
+    acpi_generic_address_t pm1a_evt_blk;
+    acpi_generic_address_t pm1b_evt_blk;
     uint16_t pm1a_cnt_val;
     uint16_t pm1b_cnt_val;
     uint64_t wakeup_vector;
     uint32_t vector_width;
     uint64_t kernel_s3_resume_vector;
-} tboot_acpi_sleep_info_t;
+} acpi_sleep_info_t;
 
 struct acpi_rsdp *get_rsdp(void);
 struct acpi_table_header *acpi_find_table(const char *table_name);
@@ -518,8 +518,8 @@ bool remove_vtd_dmar_table(void);
 
 void disable_smis(void);
 
-bool machine_sleep(const tboot_acpi_sleep_info_t *);
-void set_s3_resume_vector(const tboot_acpi_sleep_info_t *, uint64_t);
+bool machine_sleep(const acpi_sleep_info_t *);
+void set_s3_resume_vector(const acpi_sleep_info_t *, uint64_t);
 
 #endif	/* __ACPI_H__ */
 

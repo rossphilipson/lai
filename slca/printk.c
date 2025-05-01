@@ -55,7 +55,7 @@ static struct mutex print_lock;
  */
 
 /* memory-based serial log (ensure in .data section so that not cleared) */
-__data tboot_log_t g_log = {0};
+__data log_t g_log = {0};
 
 static void memlog_init(void)
 {
@@ -113,16 +113,16 @@ void printk_init(printk_init_t init_type)
     }
 
     /* parse loglvl from string to int */
-    get_tboot_loglvl();
+    get_loglvl();
 
     /* parse logging targets */
-    get_tboot_log_targets();
+    get_log_targets();
 
     if (init_type == INIT_POST_EBS || init_type == INIT_POST_LAUNCH) {
         /* now we can use VGA logging, EFI console is gone */
         if ( g_log_targets & EFITF_LOG_TARGET_VGA ) {
             vga_init();
-            get_tboot_vga_delay(); /* parse vga delay time */
+            get_vga_delay(); /* parse vga delay time */
         }
 
         /* cannot use EFI logging any longer also */
@@ -131,7 +131,7 @@ void printk_init(printk_init_t init_type)
 
     if (init_type == INIT_PRE_LAUNCH || init_type == INIT_POST_LAUNCH) {
         /* parse serial settings */
-        if ( !get_tboot_serial() )
+        if ( !get_serial() )
             g_log_targets &= ~EFITF_LOG_TARGET_SERIAL;
 
         if ( g_log_targets & EFITF_LOG_TARGET_SERIAL )

@@ -83,7 +83,7 @@ typedef struct {
     uint16_t   max_size;
     uint16_t   curr_pos;
     char       buf[EFITF_MEM_LOG_SIZE];
-} tboot_log_t;
+} log_t;
 
 /* {C0192526-6B30-4db4-844C-A3E953B88174} */
 #define EFITF_LOG_UUID   {0xc0192526, 0x6b30, 0x4db4, 0x844c, \
