@@ -41,12 +41,12 @@
 /* TODO debug only stuffs */
 #define EFI_DEBUG
 
-/* Shared RT variable between TBOOT and Xen */
-#define EFI_TBOOT_XEN_GUID \
+/* Shared RT variable between EFITF and Xen */
+#define EFI_EFITF_XEN_GUID \
     { 0xf112e6cb, 0xce01, 0x4573, {0xa0, 0x52, 0xfb, 0xdb, 0x6c, 0xc0, 0xc7, 0xcb} }
 
-#define EFI_TBOOT_XEN_REV  1
-#define EFI_TBOOT_XEN_NAME L"TbootXenVar"
+#define EFI_EFITF_XEN_REV  1
+#define EFI_EFITF_XEN_NAME L"TbootXenVar"
 
 /* Un-extern these that are defined in the GNU-EFI headers */
 EFI_SYSTEM_TABLE         *ST;

@@ -48,21 +48,21 @@ typedef struct __packed {
 #endif
 
 /* Log level */
-#ifdef NO_TBOOT_LOGLVL
-#define TBOOT_NONE
-#define TBOOT_ERR
-#define TBOOT_WARN
-#define TBOOT_INFO
-#define TBOOT_DETA
-#define TBOOT_ALL
-#else /* NO_TBOOT_LOGLVL */
-#define TBOOT_NONE       "<0>"
-#define TBOOT_ERR        "<1>"
-#define TBOOT_WARN       "<2>"
-#define TBOOT_INFO       "<3>"
-#define TBOOT_DETA       "<4>"
-#define TBOOT_ALL        "<5>"
-#endif /* NO_TBOOT_LOGLVL */
+#ifdef NO_EFITF_LOGLVL
+#define EFITF_NONE
+#define EFITF_ERR
+#define EFITF_WARN
+#define EFITF_INFO
+#define EFITF_DETA
+#define EFITF_ALL
+#else /* NO_EFITF_LOGLVL */
+#define EFITF_NONE       "<0>"
+#define EFITF_ERR        "<1>"
+#define EFITF_WARN       "<2>"
+#define EFITF_INFO       "<3>"
+#define EFITF_DETA       "<4>"
+#define EFITF_ALL        "<5>"
+#endif /* NO_EFITF_LOGLVL */
 
 
 #define TB_SHUTDOWN_REBOOT      0
@@ -72,7 +72,7 @@ typedef struct __packed {
 #define TB_SHUTDOWN_HALT        4
 #define TB_SHUTDOWN_WFS         5
 
-#define TBOOT_MEM_LOG_SIZE   0x8000
+#define EFITF_MEM_LOG_SIZE   0x8000
 
 /*
  * used to log tboot printk output
@@ -82,11 +82,11 @@ typedef struct {
     bool       is_init;
     uint16_t   max_size;
     uint16_t   curr_pos;
-    char       buf[TBOOT_MEM_LOG_SIZE];
+    char       buf[EFITF_MEM_LOG_SIZE];
 } tboot_log_t;
 
 /* {C0192526-6B30-4db4-844C-A3E953B88174} */
-#define TBOOT_LOG_UUID   {0xc0192526, 0x6b30, 0x4db4, 0x844c, \
+#define EFITF_LOG_UUID   {0xc0192526, 0x6b30, 0x4db4, 0x844c, \
                              {0xa3, 0xe9, 0x53, 0xb8, 0x81, 0x74 }}
 
 #endif /* __EFITF_H__ */

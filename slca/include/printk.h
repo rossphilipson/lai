@@ -38,20 +38,20 @@
 #include <com.h>
 #include <vga.h>
 
-#define TBOOT_LOGBUF_SIZE       256
+#define EFITF_LOGBUF_SIZE       256
 
-#define TBOOT_LOG_LEVEL_NONE    0x00
-#define TBOOT_LOG_LEVEL_ERR     0x01
-#define TBOOT_LOG_LEVEL_WARN    0x02
-#define TBOOT_LOG_LEVEL_INFO    0x04
-#define TBOOT_LOG_LEVEL_DETA    0x08
-#define TBOOT_LOG_LEVEL_ALL     0xFF
+#define EFITF_LOG_LEVEL_NONE    0x00
+#define EFITF_LOG_LEVEL_ERR     0x01
+#define EFITF_LOG_LEVEL_WARN    0x02
+#define EFITF_LOG_LEVEL_INFO    0x04
+#define EFITF_LOG_LEVEL_DETA    0x08
+#define EFITF_LOG_LEVEL_ALL     0xFF
 
-#define TBOOT_LOG_TARGET_NONE   0x00
-#define TBOOT_LOG_TARGET_VGA    0x01
-#define TBOOT_LOG_TARGET_SERIAL 0x02
-#define TBOOT_LOG_TARGET_MEMORY 0x04
-#define TBOOT_LOG_TARGET_EFI    0x10
+#define EFITF_LOG_TARGET_NONE   0x00
+#define EFITF_LOG_TARGET_VGA    0x01
+#define EFITF_LOG_TARGET_SERIAL 0x02
+#define EFITF_LOG_TARGET_MEMORY 0x04
+#define EFITF_LOG_TARGET_EFI    0x10
 
 uint8_t g_log_level;
 uint8_t g_log_targets;

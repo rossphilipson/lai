@@ -13,7 +13,7 @@ OBJ = $(ASM:.S=.o) # must be first
 OBJ += $(SRC:.c=.o)
 
 # Banner
-CFLAGS += -DTBOOT_CHANGESET=\""$(shell ((hg parents --template "{isodate|isodate} {rev}:{node|short}" >/dev/null && hg parents --template "{isodate|isodate} {rev}:{node|short}") || echo "2016-05-18 12:00 -0800 1.9.4") 2>/dev/null)"\"
+CFLAGS += -DEFITF_CHANGESET=\""$(shell ((hg parents --template "{isodate|isodate} {rev}:{node|short}" >/dev/null && hg parents --template "{isodate|isodate} {rev}:{node|short}") || echo "2016-05-18 12:00 -0800 1.9.4") 2>/dev/null)"\"
 
 
 .PHONY: all

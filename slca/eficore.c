@@ -80,8 +80,8 @@ EFI_GUID AcpiTableGuid            = ACPI_TABLE_GUID;
 EFI_GUID Acpi20TableGuid          = ACPI_20_TABLE_GUID;
 EFI_GUID SMBIOSTableGuid          = SMBIOS_TABLE_GUID;
 
-/* TBOOT/Xen */
-EFI_GUID TbootXenGuid             = EFI_TBOOT_XEN_GUID;
+/* EFITF/Xen */
+EFI_GUID TbootXenGuid             = EFI_EFITF_XEN_GUID;
 
 /* Is this pre or post EBS */
 static bool postebs = false;
@@ -335,9 +335,9 @@ static void atow_log(CHAR16 *dst, const char *src, uint32_t count)
 
 void efi_puts(const char *s, unsigned int count)
 {
-    CHAR16 wbuf[2*TBOOT_LOGBUF_SIZE];
+    CHAR16 wbuf[2*EFITF_LOGBUF_SIZE];
 
-    memset(wbuf, 0, sizeof(CHAR16)*2*TBOOT_LOGBUF_SIZE);
+    memset(wbuf, 0, sizeof(CHAR16)*2*EFITF_LOGBUF_SIZE);
     atow_log(wbuf, s, count);
     (void)ST->ConOut->OutputString(ST->ConOut, wbuf);
 }

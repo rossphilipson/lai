@@ -195,12 +195,12 @@ static inline tb_hash_t *get_policy_entry_hash(
     /* assumes policy has already been validated */
 
     if ( pol_entry == NULL ) {
-        PRINT(TBOOT_ERR"Error: pol_entry pointer is NULL\n");
+        PRINT(EFITF_ERR"Error: pol_entry pointer is NULL\n");
         return NULL;
     }
 
     if ( i < 0 || i >= pol_entry->num_hashes ) {
-        PRINT(TBOOT_ERR"Error: position is not correct.\n");
+        PRINT(EFITF_ERR"Error: position is not correct.\n");
         return NULL;
     }
 
@@ -216,12 +216,12 @@ static inline tb_policy_entry_t* get_policy_entry(const tb_policy_t *policy,
     /* assumes policy has already been validated */
 
     if ( policy == NULL ) {
-        PRINT(TBOOT_ERR"Error: policy pointer is NULL\n");
+        PRINT(EFITF_ERR"Error: policy pointer is NULL\n");
         return NULL;
     }
 
     if ( i < 0 || i >= policy->num_entries ) {
-        PRINT(TBOOT_ERR"Error: position is not correct.\n");
+        PRINT(EFITF_ERR"Error: position is not correct.\n");
         return NULL;
     }
 
@@ -242,7 +242,7 @@ static inline tb_policy_entry_t* find_policy_entry(const tb_policy_t *policy,
     /* assumes policy has already been validated */
 
     if ( policy == NULL ) {
-        PRINT(TBOOT_ERR"Error: policy pointer is NULL\n");
+        PRINT(EFITF_ERR"Error: policy pointer is NULL\n");
         return NULL;
     }
 
@@ -269,108 +269,108 @@ static inline bool verify_policy(const tb_policy_t *policy, size_t size, bool pr
 {
     int i, j;
 
-    if ( print ) PRINT(TBOOT_DETA"policy:\n");
+    if ( print ) PRINT(EFITF_DETA"policy:\n");
 
     if ( policy == NULL ) {
-        if ( print ) PRINT(TBOOT_ERR"policy pointer is NULL\n");
+        if ( print ) PRINT(EFITF_ERR"policy pointer is NULL\n");
         return false;
     }
 
     if ( size < sizeof(tb_policy_t) ) {
-        if ( print ) PRINT(TBOOT_ERR"size of policy is too small (%lu)\n",
+        if ( print ) PRINT(EFITF_ERR"size of policy is too small (%lu)\n",
                            (unsigned long)size);
         return false;
     }
 
     if ( policy->version != 0x02 ) {
-        if ( print ) PRINT(TBOOT_ERR"unsupported version (%u)\n", policy->version);
+        if ( print ) PRINT(EFITF_ERR"unsupported version (%u)\n", policy->version);
         return false;
     }
-    if ( print ) PRINT(TBOOT_DETA"\t version: %u\n", policy->version);
+    if ( print ) PRINT(EFITF_DETA"\t version: %u\n", policy->version);
 
-    if ( print ) PRINT(TBOOT_DETA"\t policy_type: %s\n",
+    if ( print ) PRINT(EFITF_DETA"\t policy_type: %s\n",
                        policy_type_to_string(policy->policy_type));
     if ( policy->policy_type >= TB_POLTYPE_MAX )
         return false;
 
-    if ( print ) PRINT(TBOOT_DETA"\t hash_alg: %s\n",
+    if ( print ) PRINT(EFITF_DETA"\t hash_alg: %s\n",
                        hash_alg_to_string(policy->hash_alg));
 
-    if ( print ) PRINT(TBOOT_DETA"\t policy_control: %08x (%s)\n",
+    if ( print ) PRINT(EFITF_DETA"\t policy_control: %08x (%s)\n",
                        policy->policy_control,
                        policy_control_to_string(policy->policy_control));
 
-    if ( print ) PRINT(TBOOT_DETA"\t num_entries: %u\n", policy->num_entries);
+    if ( print ) PRINT(EFITF_DETA"\t num_entries: %u\n", policy->num_entries);
 
     const tb_policy_entry_t *pol_entry = policy->entries;
     for ( i = 0; i < policy->num_entries; i++ ) {
         /* check header of policy entry */
         if ( ((void *)pol_entry - (void *)policy + sizeof(*pol_entry)) >
              size ) {
-            if ( print ) PRINT(TBOOT_ERR"size of policy entry is too small (%lu)\n",
+            if ( print ) PRINT(EFITF_ERR"size of policy entry is too small (%lu)\n",
                                (unsigned long)size);
             return false;
         }
 
-        if ( print ) PRINT(TBOOT_DETA"\t policy entry[%d]:\n", i);
+        if ( print ) PRINT(EFITF_DETA"\t policy entry[%d]:\n", i);
 
         if ( pol_entry->mod_num > TB_POL_MAX_MOD_NUM &&
              pol_entry->mod_num != TB_POL_MOD_NUM_ANY &&
              pol_entry->mod_num != TB_POL_MOD_NUM_NV &&
              pol_entry->mod_num != TB_POL_MOD_NUM_NV_RAW ) {
-            if ( print ) PRINT(TBOOT_ERR"mod_num invalid (%u)\n", pol_entry->mod_num);
+            if ( print ) PRINT(EFITF_ERR"mod_num invalid (%u)\n", pol_entry->mod_num);
             return false;
         }
-        if ( print ) PRINT(TBOOT_DETA"\t\t mod_num: ");
+        if ( print ) PRINT(EFITF_DETA"\t\t mod_num: ");
         if ( pol_entry->mod_num == TB_POL_MOD_NUM_ANY ) {
-            if ( print ) PRINT(TBOOT_DETA"any\n");
+            if ( print ) PRINT(EFITF_DETA"any\n");
         }
         else if ( pol_entry->mod_num == TB_POL_MOD_NUM_NV ) {
             if ( print )
-                PRINT(TBOOT_DETA"nv\n"
+                PRINT(EFITF_DETA"nv\n"
                                 "\t\t nv_index: %08x\n",
                       pol_entry->nv_index);
         }
         else if ( pol_entry->mod_num == TB_POL_MOD_NUM_NV_RAW ) {
             if ( print )
-                PRINT(TBOOT_DETA"nv_raw\n"
+                PRINT(EFITF_DETA"nv_raw\n"
                                 "\t\t nv_index: %08x\n",
                       pol_entry->nv_index);
         }
 	else
-            if ( print ) PRINT(TBOOT_DETA"%u\n", pol_entry->mod_num);
+            if ( print ) PRINT(EFITF_DETA"%u\n", pol_entry->mod_num);
 
         if ( pol_entry->pcr > TB_POL_MAX_PCR &&
              pol_entry->pcr != TB_POL_PCR_NONE ) {
-            if ( print ) PRINT(TBOOT_ERR"pcr invalid (%u)\n", pol_entry->pcr);
+            if ( print ) PRINT(EFITF_ERR"pcr invalid (%u)\n", pol_entry->pcr);
             return false;
         }
-        if ( print ) PRINT(TBOOT_DETA"\t\t pcr: ");
+        if ( print ) PRINT(EFITF_DETA"\t\t pcr: ");
         if ( pol_entry->pcr == TB_POL_PCR_NONE ) {
-            if ( print ) PRINT(TBOOT_DETA"none\n");
+            if ( print ) PRINT(EFITF_DETA"none\n");
         }
         else
-            if ( print ) PRINT(TBOOT_DETA"%u\n", pol_entry->pcr);
+            if ( print ) PRINT(EFITF_DETA"%u\n", pol_entry->pcr);
 
-        if ( print ) PRINT(TBOOT_DETA"\t\t hash_type: %s\n",
+        if ( print ) PRINT(EFITF_DETA"\t\t hash_type: %s\n",
                            hash_type_to_string(pol_entry->hash_type));
         if ( pol_entry->hash_type > TB_HTYPE_IMAGE )
             return false;
 
-        if ( print ) PRINT(TBOOT_DETA"\t\t num_hashes: %u\n", pol_entry->num_hashes);
+        if ( print ) PRINT(EFITF_DETA"\t\t num_hashes: %u\n", pol_entry->num_hashes);
 
         /* check all of policy */
         if ( ((void *)pol_entry - (void *)policy + sizeof(*pol_entry) +
               pol_entry->num_hashes * get_hash_size(policy->hash_alg))
              > size ) {
-            if ( print ) PRINT(TBOOT_ERR"size of policy entry is too small (%lu)\n",
+            if ( print ) PRINT(EFITF_ERR"size of policy entry is too small (%lu)\n",
                                (unsigned long)size);
             return false;
         }
 
         for ( j = 0; j < pol_entry->num_hashes; j++ ) {
             if ( print ) {
-                PRINT(TBOOT_DETA"\t\t hashes[%d]: ", j);
+                PRINT(EFITF_DETA"\t\t hashes[%d]: ", j);
                 print_hash(get_policy_entry_hash(pol_entry,
                                                  policy->hash_alg, j),
                            policy->hash_alg);
