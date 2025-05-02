@@ -80,7 +80,7 @@ EFI_GUID Acpi20TableGuid          = ACPI_20_TABLE_GUID;
 EFI_GUID SMBIOSTableGuid          = SMBIOS_TABLE_GUID;
 
 /* BTFE64 */
-EFI_GUID EfitfGuid                = EFI_BTFE64_XEN_GUID;
+EFI_GUID Btfe64Guid               = EFI_BTFE64_XEN_GUID;
 
 void atow(wchar_t *dst, const char *src, uint64_t count)
 {
