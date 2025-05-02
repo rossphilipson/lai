@@ -30,10 +30,10 @@
  * OF THE POSSIBILITY OF SUCH DAMAGE.
  *
  */
-#ifndef __EFITF_H__
-#define __EFITF_H__
+#ifndef __BTFE64_H__
+#define __BTFE64_H__
 
-#define EFITF_MAX_IMAGE_MEM 0xfffff000
+#define BTFE64_MAX_IMAGE_MEM 0xfffff000
 
 /* define uuid_t here in case uuid.h wasn't pre-included */
 #ifndef __UUID_H__
@@ -47,21 +47,21 @@ typedef struct __packed {
 #endif
 
 /* Log level */
-#ifdef NO_EFITF_LOGLVL
-#define EFITF_NONE
-#define EFITF_ERR
-#define EFITF_WARN
-#define EFITF_INFO
-#define EFITF_DETA
-#define EFITF_ALL
-#else /* NO_EFITF_LOGLVL */
-#define EFITF_NONE       "<0>"
-#define EFITF_ERR        "<1>"
-#define EFITF_WARN       "<2>"
-#define EFITF_INFO       "<3>"
-#define EFITF_DETA       "<4>"
-#define EFITF_ALL        "<5>"
-#endif /* NO_EFITF_LOGLVL */
+#ifdef NO_BTFE64_LOGLVL
+#define BTFE64_NONE
+#define BTFE64_ERR
+#define BTFE64_WARN
+#define BTFE64_INFO
+#define BTFE64_DETA
+#define BTFE64_ALL
+#else /* NO_BTFE64_LOGLVL */
+#define BTFE64_NONE       "<0>"
+#define BTFE64_ERR        "<1>"
+#define BTFE64_WARN       "<2>"
+#define BTFE64_INFO       "<3>"
+#define BTFE64_DETA       "<4>"
+#define BTFE64_ALL        "<5>"
+#endif /* NO_BTFE64_LOGLVL */
 
 
 #define SHUTDOWN_REBOOT      0
@@ -71,7 +71,7 @@ typedef struct __packed {
 #define SHUTDOWN_HALT        4
 #define SHUTDOWN_WFS         5
 
-#define EFITF_MEM_LOG_SIZE   0x8000
+#define BTFE64_MEM_LOG_SIZE   0x8000
 
 /*
  * used to log printk output
@@ -81,14 +81,14 @@ typedef struct {
     bool       is_init;
     uint16_t   max_size;
     uint16_t   curr_pos;
-    char       buf[EFITF_MEM_LOG_SIZE];
+    char       buf[BTFE64_MEM_LOG_SIZE];
 } log_t;
 
 /* {C0192526-6B30-4db4-844C-A3E953B88174} */
-#define EFITF_LOG_UUID   {0xc0192526, 0x6b30, 0x4db4, 0x844c, \
+#define BTFE64_LOG_UUID   {0xc0192526, 0x6b30, 0x4db4, 0x844c, \
                              {0xa3, 0xe9, 0x53, 0xb8, 0x81, 0x74 }}
 
-#endif /* __EFITF_H__ */
+#endif /* __BTFE64_H__ */
 
 /*
  * Local variables:

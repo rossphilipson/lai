@@ -85,7 +85,7 @@ EFI_STATUS efi_main(EFI_HANDLE ImageHandle,
 
     /* So we can use printk via EFI console protocol */
     printk_init(INIT_EARLY_EFI);
-    printk("EFITF EFI Entry Point: %p\n", efi_main);
+    printk("BTFE64 EFI Entry Point: %p\n", efi_main);
 
     status = BS->HandleProtocol(ImageHandle,
                                 &LoadedImageProtocol,
@@ -100,7 +100,7 @@ EFI_STATUS efi_main(EFI_HANDLE ImageHandle,
         parent_image_handle = ImageHandle;
     }
     else {
-        printk("EFITF FATAL! Cannot get loaded image information\n");
+        printk("BTFE64 FATAL! Cannot get loaded image information\n");
         ST->RuntimeServices->ResetSystem(EfiResetShutdown, status, 0, NULL);
     }
 
@@ -108,7 +108,7 @@ EFI_STATUS efi_main(EFI_HANDLE ImageHandle,
 
     /* TODO interesting stuff here */
 
-    printk("EFITF resetting system...");
+    printk("BTFE64 resetting system...");
     efi_debug_pause();
     ST->RuntimeServices->ResetSystem(EfiResetShutdown, EFI_SUCCESS, 0, NULL);
 

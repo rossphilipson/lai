@@ -64,18 +64,18 @@ static void dump_gas(const char *reg_name,
     const char *space_id[] = { "memory", "I/O", "PCI config space", "EC",
                                "SMBus" };
 
-    printk(EFITF_DETA"%s GAS @ %p:\n", reg_name, reg);
+    printk(BTFE64_DETA"%s GAS @ %p:\n", reg_name, reg);
     if ( reg == NULL )
         return;
 
     if ( reg->space_id >= ARRAY_SIZE(space_id) )
-        printk(EFITF_DETA"\t space_id: unsupported (%u)\n", reg->space_id);
+        printk(BTFE64_DETA"\t space_id: unsupported (%u)\n", reg->space_id);
     else
-        printk(EFITF_DETA"\t space_id: %s\n", space_id[reg->space_id]);
-    printk(EFITF_DETA"\t bit_width: %u\n", reg->bit_width);
-    printk(EFITF_DETA"\t bit_offset: %u\n", reg->bit_offset);
-    printk(EFITF_DETA"\t access_width: %u\n", reg->access_width);
-    printk(EFITF_DETA"\t address: %Lx\n", reg->address);
+        printk(BTFE64_DETA"\t space_id: %s\n", space_id[reg->space_id]);
+    printk(BTFE64_DETA"\t bit_width: %u\n", reg->bit_width);
+    printk(BTFE64_DETA"\t bit_offset: %u\n", reg->bit_offset);
+    printk(BTFE64_DETA"\t access_width: %u\n", reg->access_width);
+    printk(BTFE64_DETA"\t address: %Lx\n", reg->address);
 }
 
 static inline struct acpi_rsdt *get_rsdt(void)
@@ -86,7 +86,7 @@ static inline struct acpi_rsdt *get_rsdt(void)
 static inline struct acpi_xsdt *get_xsdt(void)
 {
     if ( rsdp->rsdp_xsdt >= 0x100000000ULL ) {
-        printk(EFITF_ERR"XSDT above 4GB\n");
+        printk(BTFE64_ERR"XSDT above 4GB\n");
         return NULL;
     }
     return (struct acpi_xsdt *)(uintptr_t)rsdp->rsdp_xsdt;
@@ -113,12 +113,12 @@ static bool find_rsdp_in_range(void *start, void *end)
         if ( memcmp(rsdp->rsdp1.signature, RSDP_SIG,
                     sizeof(rsdp->rsdp1.signature)) == 0 ) {
             if ( verify_acpi_checksum((uint8_t *)rsdp, RSDP_CHKSUM_LEN) ) {
-                printk(EFITF_DETA"RSDP (v%u, %.6s) @ %p\n", rsdp->rsdp1.revision,
+                printk(BTFE64_DETA"RSDP (v%u, %.6s) @ %p\n", rsdp->rsdp1.revision,
                        rsdp->rsdp1.oemid, rsdp);
                 return true;
             }
             else {
-                printk(EFITF_ERR"checksum failed.\n");
+                printk(BTFE64_ERR"checksum failed.\n");
                 return false;
             }
         }
@@ -148,7 +148,7 @@ static bool find_rsdp(void)
     if ( find_rsdp_in_range(RSDP_SCOPE2_LOW, RSDP_SCOPE2_HIGH) )
         return true;
 
-    printk(EFITF_ERR"can't find RSDP\n");
+    printk(BTFE64_ERR"can't find RSDP\n");
     rsdp = NULL;
     return false;
 }
@@ -171,7 +171,7 @@ struct acpi_table_header *acpi_find_table(const char *table_name)
     uint32_t *curr_table_32;
 
     if ( !find_rsdp() ) {
-        printk(EFITF_ERR"no rsdp to use\n");
+        printk(BTFE64_ERR"no rsdp to use\n");
         return NULL;
     }
 
@@ -193,7 +193,7 @@ struct acpi_table_header *acpi_find_table(const char *table_name)
         struct acpi_rsdt *rsdt = get_rsdt();
 
         if ( rsdt == NULL ) {
-            printk(EFITF_ERR"rsdt is invalid.\n");
+            printk(BTFE64_ERR"rsdt is invalid.\n");
             return NULL;
         }
 
@@ -207,7 +207,7 @@ struct acpi_table_header *acpi_find_table(const char *table_name)
         }
     }
 
-    printk(EFITF_ERR"cann't find %s table.\n", table_name);
+    printk(BTFE64_ERR"cann't find %s table.\n", table_name);
     return NULL;
 }
 
@@ -221,7 +221,7 @@ bool save_vtd_dmar_table(void)
     /* find DMAR table and save it */
     g_dmar_table = (struct acpi_table_header *)get_vtd_dmar_table();
 
-    printk(EFITF_DETA"DMAR table @ %p saved.\n", g_dmar_table);
+    printk(BTFE64_DETA"DMAR table @ %p saved.\n", g_dmar_table);
     return true;
 }
 
@@ -234,13 +234,13 @@ bool restore_vtd_dmar_table(void)
     /* find DMAR table first */
     hdr = (struct acpi_table_header *)get_vtd_dmar_table();
     if ( hdr != NULL ) {
-        printk(EFITF_DETA"DMAR table @ %p is still there, skip restore step.\n", hdr);
+        printk(BTFE64_DETA"DMAR table @ %p is still there, skip restore step.\n", hdr);
         return true;
     }
 
     /* check saved DMAR table */
     if ( g_dmar_table == NULL ) {
-        printk(EFITF_ERR"No DMAR table saved, abort restore step.\n");
+        printk(BTFE64_ERR"No DMAR table saved, abort restore step.\n");
         return false;
     }
 
@@ -249,7 +249,7 @@ bool restore_vtd_dmar_table(void)
 
     /* need to hide DMAR table while resume from S3 */
     g_hide_dmar = true;
-    printk(EFITF_DETA"DMAR table @ %p restored.\n", hdr);
+    printk(BTFE64_DETA"DMAR table @ %p restored.\n", hdr);
     return true;
 }
 
@@ -259,20 +259,20 @@ bool remove_vtd_dmar_table(void)
 
     /* check whether it is needed */
     if ( !g_hide_dmar ) {
-        printk(EFITF_DETA"No need to hide DMAR table.\n");
+        printk(BTFE64_DETA"No need to hide DMAR table.\n");
         return true;
     }
 
     /* find DMAR table */
     hdr = (struct acpi_table_header *)get_vtd_dmar_table();
     if ( hdr == NULL ) {
-        printk(EFITF_DETA"No DMAR table, skip remove step.\n");
+        printk(BTFE64_DETA"No DMAR table, skip remove step.\n");
         return true;
     }
 
     /* remove DMAR table */
     hdr->signature[0] = '\0';
-    printk(EFITF_DETA"DMAR table @ %p removed.\n", hdr);
+    printk(BTFE64_DETA"DMAR table @ %p removed.\n", hdr);
     return true;
 }
 
@@ -285,7 +285,7 @@ uint32_t get_madt_apic_base(void)
 {
     struct acpi_madt *madt = get_apic_table();
     if ( madt == NULL ) {
-        printk(EFITF_ERR"no MADT table found\n");
+        printk(BTFE64_ERR"no MADT table found\n");
         return 0;
     }
     return (uint32_t)madt->local_apic_address;
@@ -295,7 +295,7 @@ struct acpi_table_ioapic *get_acpi_ioapic_table(void)
 {
     struct acpi_madt *madt = get_apic_table();
     if ( madt == NULL ) {
-        printk(EFITF_ERR"no MADT table found\n");
+        printk(BTFE64_ERR"no MADT table found\n");
         return NULL;
     }
 
@@ -307,14 +307,14 @@ struct acpi_table_ioapic *get_acpi_ioapic_table(void)
 
 		if ( entry->madt_lapic.apic_type == ACPI_MADT_IOAPIC ) {
 			if ( length != sizeof(entry->madt_ioapic) ) {
-                printk(EFITF_ERR"APIC length error.\n");
+                printk(BTFE64_ERR"APIC length error.\n");
                 return NULL;
             }
             return (struct acpi_table_ioapic *)entry;
         }
 		entry = (void *)entry + length;
 	}
-    printk(EFITF_ERR"no IOAPIC type.\n");
+    printk(BTFE64_ERR"no IOAPIC type.\n");
     return NULL;
 }
 
@@ -327,7 +327,7 @@ static bool write_to_reg(const acpi_generic_address_t *reg,
                          uint32_t val)
 {
     if ( reg->address >= 100000000ULL ) {
-        printk(EFITF_ERR"GAS address >4GB (0x%Lx)\n", reg->address);
+        printk(BTFE64_ERR"GAS address >4GB (0x%Lx)\n", reg->address);
         return false;
     }
     uint64_t address = (uint64_t)reg->address;
@@ -344,7 +344,7 @@ static bool write_to_reg(const acpi_generic_address_t *reg,
                 outl(address, val);
                 return true;
             default:
-                printk(EFITF_ERR"unsupported GAS bit width: %u\n", reg->bit_width);
+                printk(BTFE64_ERR"unsupported GAS bit width: %u\n", reg->bit_width);
                 return false;
         }
     }
@@ -360,12 +360,12 @@ static bool write_to_reg(const acpi_generic_address_t *reg,
                 writel(address, val);
                 return true;
             default:
-                printk(EFITF_ERR"unsupported GAS bit width: %u\n", reg->bit_width);
+                printk(BTFE64_ERR"unsupported GAS bit width: %u\n", reg->bit_width);
                 return false;
         }
     }
 
-    printk(EFITF_ERR"unsupported GAS addr space ID: %u\n", reg->space_id);
+    printk(BTFE64_ERR"unsupported GAS addr space ID: %u\n", reg->space_id);
     return false;
 }
 
@@ -373,7 +373,7 @@ static bool read_from_reg(const acpi_generic_address_t *reg,
                           uint32_t *val)
 {
     if ( reg->address >= 100000000ULL ) {
-        printk(EFITF_ERR"GAS address >4GB (0x%Lx)\n", reg->address);
+        printk(BTFE64_ERR"GAS address >4GB (0x%Lx)\n", reg->address);
         return false;
     }
     uint64_t address = (uint64_t)reg->address;
@@ -389,7 +389,7 @@ static bool read_from_reg(const acpi_generic_address_t *reg,
             case 32:
                 *val = inl(address);
                 return true; default:
-                printk(EFITF_ERR"unsupported GAS bit width: %u\n", reg->bit_width);
+                printk(BTFE64_ERR"unsupported GAS bit width: %u\n", reg->bit_width);
                 return false;
         }
     }
@@ -405,12 +405,12 @@ static bool read_from_reg(const acpi_generic_address_t *reg,
                 *val = readl(address);
                 return true;
             default:
-                printk(EFITF_ERR"unsupported GAS bit width: %u\n", reg->bit_width);
+                printk(BTFE64_ERR"unsupported GAS bit width: %u\n", reg->bit_width);
                 return false;
         }
     }
 
-    printk(EFITF_ERR"unsupported GAS addr space ID: %u\n", reg->space_id);
+    printk(BTFE64_ERR"unsupported GAS addr space ID: %u\n", reg->space_id);
     return false;
 }
 
@@ -466,10 +466,10 @@ void set_s3_resume_vector(const acpi_sleep_info_t *acpi_sinfo,
         *(uint64_t *)(unsigned long long)(acpi_sinfo->wakeup_vector) =
                                     resume_vector;
     else
-        printk(EFITF_WARN"vector_width error.\n");
+        printk(BTFE64_WARN"vector_width error.\n");
 
-    acpi_printk(EFITF_DETA"wakeup_vector_address = %llx\n", acpi_sinfo->wakeup_vector);
-    acpi_printk(EFITF_DETA"wakeup_vector_value = %llxx\n", resume_vector);
+    acpi_printk(BTFE64_DETA"wakeup_vector_address = %llx\n", acpi_sinfo->wakeup_vector);
+    acpi_printk(BTFE64_DETA"wakeup_vector_value = %llxx\n", resume_vector);
 }
 
 /*
