@@ -41,6 +41,7 @@
 #include <page.h>
 #include <printk.h>
 #include <eficore.h>
+#include <eficonfig.h>
 #include <btfe64.h>
 
 static EFI_HANDLE       parent_image_handle;
@@ -48,6 +49,10 @@ static EFI_HANDLE       parent_device_handle;
 static EFI_DEVICE_PATH *device_path;
 static void            *init_base; /* before reloc */
 static uint64_t         init_size; /* original size */
+
+static EFI_FILE_IO_INTERFACE *efi_file_system = NULL;
+
+static uint8_t btfe64_config_file[EFI_MAX_CONFIG_FILE];
 
 static void efi_debug_pause(void)
 {
@@ -70,7 +75,99 @@ static void efi_debug_print_i(void)
     efi_debug_pause();
 }
 
+static void efi_debug_print_w(const char *pfx, const wchar_t *wstr)
+{
+    char *p = wtoa_alloc(wstr);
+    printk("%s %s\n", pfx, p);
+    BS->FreePool(p);
+}
+
 #define efi_debug_print_s(p, s) printk("%s %s\n", p, s)
+
+static void efi_form_config_path(wchar_t *path)
+{
+    wchar_t *ptr = path + wcslen(path);
+
+    efi_debug_print_w("IMAGE PATH:", path);
+
+    /* Form the config file path */
+    while (ptr >= path) {
+        if (*ptr == L'.') {
+            memcpy((ptr + 1), L"cfg\0", 8);
+            break;
+        }
+        ptr--;
+    }
+
+    efi_debug_print_w("CONFIG PATH:", path);
+}
+
+static EFI_STATUS efi_load_config(void)
+{
+    EFI_STATUS            status;
+    wchar_t              *file_path = NULL;
+    EFI_PHYSICAL_ADDRESS  addr = BTFE64_MAX_IMAGE_MEM;
+    void                 *buffer = NULL;
+    uint64_t              size;
+    efi_file_t           *cfg;
+
+    /* Get file path for BYFE64 image and config */
+    status = BS->AllocatePool(EfiLoaderData,
+                              (EFI_MAX_PATH + 4)*sizeof(wchar_t),
+                              (void**)&file_path);
+    if (EFI_ERROR(status)) {
+        printk("Failed to alloc image path buffer - status: %d\n", status);
+        return status;
+    }
+
+    status = efi_device_path_to_text(device_path,
+                                     file_path,
+                                     EFI_MAX_PATH);
+    if (EFI_ERROR(status)) {
+        printk("Failed to get config path - status: %d\n", status);
+        goto err;
+    }
+
+    efi_form_config_path(file_path);
+
+    /* Read the config into RT memory and store */
+    status = efi_read_file(efi_file_system,
+                           file_path,
+                           EfiRuntimeServicesData,
+                           &size,
+                           &addr);
+    if (EFI_ERROR(status)) {
+        printk("Failed to read config file - status: %d\n", status);
+        goto err;
+    }
+
+    if (size > EFI_MAX_CONFIG_FILE) {
+        status = EFI_INVALID_PARAMETER;
+        printk("Config file too big - size: %d\n", size);
+        BS->FreePool((void*)addr);
+        goto err;
+    }
+
+    /* Make a copy of the raw BTFE64 config in the MLE */
+    memcpy(btfe64_config_file, (void*)addr, size);
+    cfg = efi_get_file(EFI_FILE_BTFE64_CONFIG);
+    cfg->u.base = btfe64_config_file;
+    cfg->size = size;
+
+    /* Prep for reading */
+    efi_cfg_pre_parse(cfg);
+
+    BS->FreePool((void*)addr);
+    BS->FreePool(file_path);
+
+    return EFI_SUCCESS;
+
+err:
+    if (file_path)
+        BS->FreePool(file_path);
+
+    return status;
+}
 
 EFI_STATUS efi_main(EFI_HANDLE ImageHandle,
                     EFI_SYSTEM_TABLE *SystemTable)
