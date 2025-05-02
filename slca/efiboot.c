@@ -198,7 +198,26 @@ EFI_STATUS efi_main(EFI_HANDLE ImageHandle,
     }
     else {
         printk("BTFE64 FATAL! Cannot get loaded image information\n");
-        ST->RuntimeServices->ResetSystem(EfiResetShutdown, status, 0, NULL);
+        goto out;
+    }
+
+    /* Open the file system for the boot partition once up front */
+    status = BS->OpenProtocol(parent_device_handle,
+                              &FileSystemProtocol,
+                              (void**)&efi_file_system,
+                              parent_image_handle,
+                              NULL,
+                              EFI_OPEN_PROTOCOL_BY_HANDLE_PROTOCOL);
+    if (EFI_ERROR(status)) {
+        printk("Failed to open FileSystemProtocol - status: %d\n", status);
+        goto out;
+    }
+
+    /* Load the configuration files and information */
+    status = efi_load_config();
+    if (EFI_ERROR(status)) {
+        printk("Failed to load configuration file - status: %d\n", status);
+        goto out;
     }
 
     efi_debug_print_i();
@@ -207,7 +226,10 @@ EFI_STATUS efi_main(EFI_HANDLE ImageHandle,
 
     printk("BTFE64 resetting system...");
     efi_debug_pause();
-    ST->RuntimeServices->ResetSystem(EfiResetShutdown, EFI_SUCCESS, 0, NULL);
+    status = EFI_SUCCESS;
+
+out:
+    ST->RuntimeServices->ResetSystem(EfiResetShutdown, status, 0, NULL);
 
     return status;
 }
