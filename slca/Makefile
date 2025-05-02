@@ -17,10 +17,10 @@ CFLAGS += -DBTFE64_CHANGESET=\""$(shell ((hg parents --template "{isodate|isodat
 
 
 .PHONY: all
-all: efitf.lds efitf.efi efitf.dsm
+all: btfe64.lds btfe64.efi btfe64.dsm
 
-efitf.efi: $(OBJ)
-	$(LD) efitf.lds $(LDFLAGS) $^ -o $@
+btfe64.efi: $(OBJ)
+	$(LD) btfe64.lds $(LDFLAGS) $^ -o $@
 
 # Grrr someone is frobbing the stack
 tpm_20.o: tpm_20.c
@@ -32,12 +32,12 @@ tpm_20.o: tpm_20.c
 %.o: %.S
 	$(CC) $(AFLAGS) -c $< -o $@
 
-efitf.lds:
+btfe64.lds:
 	$(PWD)/genlds.sh $(CC)
 
-efitf.dsm:
-	mingw-objdump -d efitf.efi > efitf.dsm
+btfe64.dsm:
+	mingw-objdump -d btfe64.efi > btfe64.dsm
 
 .PHONY: clean
 clean:
-	rm -f efitf.efi *.o efitf.dsm efitf.lds
+	rm -f btfe64.efi *.o btfe64.dsm btfe64.lds

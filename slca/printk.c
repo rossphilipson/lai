@@ -43,7 +43,7 @@
 #include <printk.h>
 #include <eficore.h>
 #include <cmdline.h>
-#include <efitf.h>
+#include <btfe64.h>
 
 uint8_t g_log_level = BTFE64_LOG_LEVEL_NONE;
 uint8_t g_log_targets = BTFE64_LOG_TARGET_NONE;

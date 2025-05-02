@@ -41,7 +41,7 @@
 #include <page.h>
 #include <printk.h>
 #include <eficore.h>
-#include <efitf.h>
+#include <btfe64.h>
 
 static EFI_HANDLE       parent_image_handle;
 static EFI_HANDLE       parent_device_handle;

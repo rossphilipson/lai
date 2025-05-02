@@ -41,7 +41,7 @@
 #include <printk.h>
 #include <eficore.h>
 #include <pe.h>
-#include <efitf.h>
+#include <btfe64.h>
 
 /* Global Table Pointers */
 EFI_SYSTEM_TABLE        *ST;

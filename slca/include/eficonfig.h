@@ -40,7 +40,7 @@
 #define EFI_MAX_CONFIG_FILE 1024 /* plenty of room for a config file */
 
 /* BTFE64 config */
-#define SECTION_BTFE64 "efitf"
+#define SECTION_BTFE64 "btfe64"
 # define ITEM_OPTIONS "options"
 # define ITEM_XENPATH "xenpath"
 
