@@ -39,6 +39,7 @@
 #include <compiler.h>
 #include <misc.h>
 #include <page.h>
+#include <cmdline.h>
 #include <printk.h>
 #include <eficore.h>
 #include <eficonfig.h>
@@ -109,6 +110,7 @@ static EFI_STATUS efi_load_config(void)
     EFI_PHYSICAL_ADDRESS  addr = BTFE64_MAX_IMAGE_MEM;
     void                 *buffer = NULL;
     uint64_t              size;
+    const char           *cmdline;
     efi_file_t           *cfg;
 
     /* Get file path for BYFE64 image and config */
@@ -159,6 +161,17 @@ static EFI_STATUS efi_load_config(void)
 
     BS->FreePool((void*)addr);
     BS->FreePool(file_path);
+
+    /* Copy and parse the command line */
+    memset(g_cmdline, '\0', sizeof(g_cmdline));
+    cmdline = efi_cfg_get_value(cfg, SECTION_BTFE64, ITEM_OPTIONS);
+    if (cmdline)
+        strncpy(g_cmdline, cmdline, sizeof(g_cmdline)-1);
+
+    parse_cmdline(false);
+
+    /* Initialize all logging targets */
+    printk_init(INIT_PRE_LAUNCH);
 
     return EFI_SUCCESS;
 
@@ -221,6 +234,14 @@ EFI_STATUS efi_main(EFI_HANDLE ImageHandle,
     }
 
     efi_debug_print_i();
+
+    /* DEBUG */
+    print_test_chars();
+
+    printk(BTFE64_INFO"******************* BTFE64 *******************\n");
+    printk(BTFE64_INFO"   %s\n", BTFE64_CHANGESET);
+    printk(BTFE64_INFO"   command line: %s\n", g_cmdline);
+    printk(BTFE64_INFO"*********************************************\n");
 
     /* TODO interesting stuff here */
 
