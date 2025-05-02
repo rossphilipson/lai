@@ -47,9 +47,8 @@
 
 /*
  * copy of original command line
- * part of tboot measurement (hence in .text section)
  */
-__text char g_cmdline[CMDLINE_SIZE] = { 0 };
+char g_cmdline[CMDLINE_SIZE] = { 0 };
 
 /* Used for kernel command line parameter setup */
 typedef struct {

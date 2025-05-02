@@ -38,8 +38,6 @@
  * $FreeBSD: src/sys/i386/include/cpufunc.h,v 1.158 2010/01/01 20:55:11 obrien Exp $
  */
 
-/* modified to use tboot's types */
-
 #define readb(va)	(*(volatile uint8_t *) (va))
 #define readw(va)	(*(volatile uint16_t *) (va))
 #define readl(va)	(*(volatile uint32_t *) (va))

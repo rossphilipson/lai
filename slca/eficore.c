@@ -79,8 +79,8 @@ EFI_GUID AcpiTableGuid            = ACPI_TABLE_GUID;
 EFI_GUID Acpi20TableGuid          = ACPI_20_TABLE_GUID;
 EFI_GUID SMBIOSTableGuid          = SMBIOS_TABLE_GUID;
 
-/* EFITF/Xen */
-EFI_GUID TbootXenGuid             = EFI_EFITF_XEN_GUID;
+/* EFITF */
+EFI_GUID EfitfGuid                = EFI_EFITF_XEN_GUID;
 
 /* Is this pre or post EBS */
 static bool postebs = false;

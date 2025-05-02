@@ -36,7 +36,6 @@
 #define EFITF_MAX_IMAGE_MEM 0xfffff000
 
 /* define uuid_t here in case uuid.h wasn't pre-included */
-/* (i.e. so tboot.h can be self-sufficient) */
 #ifndef __UUID_H__
 typedef struct __packed {
     uint32_t    data1;
@@ -75,7 +74,7 @@ typedef struct __packed {
 #define EFITF_MEM_LOG_SIZE   0x8000
 
 /*
- * used to log tboot printk output
+ * used to log printk output
  */
 typedef struct {
     uuid_t     uuid;
