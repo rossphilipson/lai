@@ -1,8 +1,9 @@
 /*
- * cmdline.h: support functions for command line parsing
+ * eficonfig.h: EFI related config definitions.
  *
- * Copyright (c) 2006-2010, Intel Corporation
- * All rights reserved.
+ * Copyright (c) 2017 Assured Information Security.
+ *
+ * Ross Philipson <philipsonr@ainfosec.com>
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -30,39 +31,46 @@
  * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
  * OF THE POSSIBILITY OF SUCH DAMAGE.
- *
  */
 
-#ifndef __CMDLINE_H__
-#define __CMDLINE_H__
+#ifndef __EFI_CONFIG_H__
+#define __EFI_CONFIG_H__
 
-#define CMDLINE_SIZE   512
-char g_cmdline[CMDLINE_SIZE];
+#define EFI_MAX_PATH 512
+#define EFI_MAX_CONFIG_FILE 1024 /* plenty of room for a config file */
 
-void parse_cmdline(bool defaults);
-void get_loglvl(void);
-void get_log_targets(void);
-bool get_serial(void);
-void get_baud(void);
-void get_fmt(void);
-void get_vga_delay(void);
+/* EFITF config */
+#define SECTION_EFITF "efitf"
+# define ITEM_OPTIONS "options"
+# define ITEM_XENPATH "xenpath"
 
-/* for parse cmdline of linux kernel, say vga and mem */
-void linux_parse_cmdline(const char *cmdline);
-bool get_linux_vga(int *vid_mode);
-bool get_linux_mem(uint64_t *initrd_max_mem);
+typedef enum efi_file_select {
+    EFI_FILE_INVALID = 0,
+    EFI_FILE_EFITF_CONFIG,
+    EFI_FILE_MAX
+} efi_file_select_t;
 
-uint8_t get_loglvl_prefix(char **pbuf, int *len);
+typedef struct {
+    union {
+        uint8_t *base;
+        EFI_PHYSICAL_ADDRESS addr;
+    } u;
+    uint64_t size;
+} efi_file_t;
 
-#endif    /* __CMDLINE_H__ */
+typedef struct {
+    void     *base;
+    uint64_t  size;
+    uint64_t  desc_size;
+    uint32_t  desc_ver;
+} efi_memmap_t;
 
+efi_file_t *efi_get_file(efi_file_select_t sel);
+efi_memmap_t *efi_get_memmap(bool final);
+void efi_set_postebs(void);
+bool efi_is_postebs(void);
+void efi_cfg_pre_parse(efi_file_t *config);
+char *efi_cfg_get_value(efi_file_t *config, const char *section,
+                        const char *item);
 
-/*
- * Local variables:
- * mode: C
- * c-set-style: "BSD"
- * c-basic-offset: 4
- * tab-width: 4
- * indent-tabs-mode: nil
- * End:
- */
+#endif /* __EFI_CONFIG_H__ */

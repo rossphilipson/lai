@@ -42,7 +42,7 @@
 #include <misc.h>
 #include <printk.h>
 #include <cmdline.h>
-#include <eficore.h>
+#include <eficonfig.h>
 #include <efitf.h>
 
 /*

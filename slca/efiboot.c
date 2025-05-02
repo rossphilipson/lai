@@ -49,7 +49,6 @@ static EFI_DEVICE_PATH *device_path;
 static void            *init_base; /* before reloc */
 static uint64_t         init_size; /* original size */
 
-#ifdef EFI_DEBUG
 static void efi_debug_pause(void)
 {
     EFI_STATUS    status;
@@ -72,12 +71,6 @@ static void efi_debug_print_i(void)
 }
 
 #define efi_debug_print_s(p, s) printk("%s %s\n", p, s)
-
-#else
-#define efi_debug_pause()
-#define efi_debug_print_i()
-#define efi_debug_print_s(p, s)
-#endif
 
 EFI_STATUS efi_main(EFI_HANDLE ImageHandle,
                     EFI_SYSTEM_TABLE *SystemTable)
@@ -114,6 +107,10 @@ EFI_STATUS efi_main(EFI_HANDLE ImageHandle,
     efi_debug_print_i();
 
     /* TODO interesting stuff here */
+
+    printk("EFITF resetting system...");
+    efi_debug_pause();
+    ST->RuntimeServices->ResetSystem(EfiResetShutdown, EFI_SUCCESS, 0, NULL);
 
     return status;
 }

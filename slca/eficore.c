@@ -82,9 +82,6 @@ EFI_GUID SMBIOSTableGuid          = SMBIOS_TABLE_GUID;
 /* EFITF */
 EFI_GUID EfitfGuid                = EFI_EFITF_XEN_GUID;
 
-/* Is this pre or post EBS */
-static bool postebs = false;
-
 void atow(wchar_t *dst, const char *src, uint64_t count)
 {
     uint64_t i;
@@ -187,16 +184,6 @@ wchar_t *atow_cat(const wchar_t *base, const char *tail)
     atow((dst + wcount - 1), tail, scount);
 
     return dst;
-}
-
-void efi_set_postebs(void)
-{
-    postebs = true;
-}
-
-bool efi_is_postebs(void)
-{
-    return postebs;
 }
 
 uint8_t *efi_get_rsdp(void)

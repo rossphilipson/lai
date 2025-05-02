@@ -71,9 +71,6 @@ void atow(wchar_t *dst, const char *src, uint64_t count);
 bool wtoa(char *dst, const wchar_t *src, uint64_t count);
 uint64_t wcslen(const wchar_t *str);
 
-void efi_set_postebs(void);
-bool efi_is_postebs(void);
-
 uint8_t *efi_get_rsdp(void);
 
 void *efi_get_pe_section(const char *name, void *image_base,
