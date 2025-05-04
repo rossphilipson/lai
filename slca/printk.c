@@ -45,8 +45,8 @@
 #include <cmdline.h>
 #include <btfe64.h>
 
-uint8_t g_log_level = BTFE64_LOG_LEVEL_NONE;
-uint8_t g_log_targets = BTFE64_LOG_TARGET_NONE;
+uint8_t g_log_level = DBOOT64_LOG_LEVEL_NONE;
+uint8_t g_log_targets = DBOOT64_LOG_TARGET_NONE;
 
 static struct mutex print_lock;
 
@@ -60,16 +60,16 @@ __data log_t g_log = {0};
 static void memlog_init(void)
 {
     if ( !g_log.is_init ) {
-        g_log.uuid = (uuid_t)BTFE64_LOG_UUID;
+        g_log.uuid = (uuid_t)DBOOT64_LOG_UUID;
         g_log.curr_pos = 0;
-        g_log.max_size = BTFE64_MEM_LOG_SIZE;
+        g_log.max_size = DBOOT64_MEM_LOG_SIZE;
         g_log.is_init = true;
     }
 
     /* initialize these post-launch as well, since bad/malicious values */
     /* could compromise environment */
-    g_log.uuid = (uuid_t)BTFE64_LOG_UUID;
-    g_log.max_size = BTFE64_MEM_LOG_SIZE;
+    g_log.uuid = (uuid_t)DBOOT64_LOG_UUID;
+    g_log.max_size = DBOOT64_MEM_LOG_SIZE;
 
     /* if we're calling this post-launch, verify that curr_pos is valid */
     if ( g_log.curr_pos > g_log.max_size )
@@ -106,8 +106,8 @@ void printk_init(printk_init_t init_type)
     if (init_type == INIT_EARLY_EFI) {
         /* Default to EFI logging at early startup */
 #ifdef EFI_EARLY_PRINTK
-        g_log_targets = BTFE64_LOG_TARGET_EFI;
-        g_log_level = BTFE64_LOG_LEVEL_ALL;
+        g_log_targets = DBOOT64_LOG_TARGET_EFI;
+        g_log_level = DBOOT64_LOG_LEVEL_ALL;
 #endif
         return;
     }
@@ -120,39 +120,39 @@ void printk_init(printk_init_t init_type)
 
     if (init_type == INIT_POST_EBS || init_type == INIT_POST_LAUNCH) {
         /* now we can use VGA logging, EFI console is gone */
-        if ( g_log_targets & BTFE64_LOG_TARGET_VGA ) {
+        if ( g_log_targets & DBOOT64_LOG_TARGET_VGA ) {
             vga_init();
             get_vga_delay(); /* parse vga delay time */
         }
 
         /* cannot use EFI logging any longer also */
-        g_log_targets &= ~BTFE64_LOG_TARGET_EFI;
+        g_log_targets &= ~DBOOT64_LOG_TARGET_EFI;
     }
 
     if (init_type == INIT_PRE_LAUNCH || init_type == INIT_POST_LAUNCH) {
         /* parse serial settings */
         if ( !get_serial() )
-            g_log_targets &= ~BTFE64_LOG_TARGET_SERIAL;
+            g_log_targets &= ~DBOOT64_LOG_TARGET_SERIAL;
 
-        if ( g_log_targets & BTFE64_LOG_TARGET_SERIAL )
+        if ( g_log_targets & DBOOT64_LOG_TARGET_SERIAL )
             serial_init();
 
-        if ( g_log_targets & BTFE64_LOG_TARGET_MEMORY )
+        if ( g_log_targets & DBOOT64_LOG_TARGET_MEMORY )
             memlog_init();
     }
 }
 
 #define WRITE_LOGS(s, n) \
     do {                                                                 \
-        if (g_log_targets & BTFE64_LOG_TARGET_EFI) efi_write(s, n);       \
-        if (g_log_targets & BTFE64_LOG_TARGET_MEMORY) memlog_write(s, n); \
-        if (g_log_targets & BTFE64_LOG_TARGET_SERIAL) serial_write(s, n); \
-        if (g_log_targets & BTFE64_LOG_TARGET_VGA) vga_write(s, n);       \
+        if (g_log_targets & DBOOT64_LOG_TARGET_EFI) efi_write(s, n);       \
+        if (g_log_targets & DBOOT64_LOG_TARGET_MEMORY) memlog_write(s, n); \
+        if (g_log_targets & DBOOT64_LOG_TARGET_SERIAL) serial_write(s, n); \
+        if (g_log_targets & DBOOT64_LOG_TARGET_VGA) vga_write(s, n);       \
     } while (0)
 
 void printk(const char *fmt, ...)
 {
-    char buf[BTFE64_LOGBUF_SIZE];
+    char buf[DBOOT64_LOGBUF_SIZE];
     char *pbuf = buf;
     int n;
     va_list ap;
@@ -169,9 +169,9 @@ void printk(const char *fmt, ...)
         goto exit;
 
     mtx_enter(&print_lock);
-    /* prepend "BTFE64: " if the last line that was printed ended with a '\n' */
+    /* prepend "DBOOT64: " if the last line that was printed ended with a '\n' */
     if ( last_line_cr )
-        WRITE_LOGS("BTFE64: ", 8);
+        WRITE_LOGS("DBOOT64: ", 8);
 
     last_line_cr = (n > 0 && (*(pbuf+n-1) == '\n'));
     WRITE_LOGS(pbuf, n);

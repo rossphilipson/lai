@@ -79,8 +79,8 @@ EFI_GUID AcpiTableGuid            = ACPI_TABLE_GUID;
 EFI_GUID Acpi20TableGuid          = ACPI_20_TABLE_GUID;
 EFI_GUID SMBIOSTableGuid          = SMBIOS_TABLE_GUID;
 
-/* BTFE64 */
-EFI_GUID Btfe64Guid               = EFI_BTFE64_XEN_GUID;
+/* DBOOT64 */
+EFI_GUID Btfe64Guid               = EFI_DBOOT64_XEN_GUID;
 
 void atow(wchar_t *dst, const char *src, uint64_t count)
 {
@@ -321,9 +321,9 @@ static void atow_log(CHAR16 *dst, const char *src, uint32_t count)
 
 void efi_puts(const char *s, unsigned int count)
 {
-    CHAR16 wbuf[2*BTFE64_LOGBUF_SIZE];
+    CHAR16 wbuf[2*DBOOT64_LOGBUF_SIZE];
 
-    memset(wbuf, 0, sizeof(CHAR16)*2*BTFE64_LOGBUF_SIZE);
+    memset(wbuf, 0, sizeof(CHAR16)*2*DBOOT64_LOGBUF_SIZE);
     atow_log(wbuf, s, count);
     (void)ST->ConOut->OutputString(ST->ConOut, wbuf);
 }
@@ -508,7 +508,7 @@ EFI_STATUS efi_read_file(EFI_FILE_IO_INTERFACE *file_system,
     EFI_FILE_INFO        *file_info;
     EFI_STATUS            status = EFI_SUCCESS;
     uint64_t              size;
-    EFI_PHYSICAL_ADDRESS  addr = BTFE64_MAX_IMAGE_MEM;
+    EFI_PHYSICAL_ADDRESS  addr = DBOOT64_MAX_IMAGE_MEM;
     char                 *print_name = wtoa_alloc(file_name);
 
     *size_out = 0;

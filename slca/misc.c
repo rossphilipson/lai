@@ -56,10 +56,10 @@ void print_hex(const char *prefix, const void *prtptr, size_t size)
 
     for ( i = 0; i < size; i++ ) {
         if ( i % 16 == 0 && prefix != NULL )
-            printk(BTFE64_DETA"\n%s", prefix);
-        printk(BTFE64_DETA"%02x ", *(uint8_t *)prtptr++);
+            printk(DBOOT64_DETA"\n%s", prefix);
+        printk(DBOOT64_DETA"%02x ", *(uint8_t *)prtptr++);
     }
-    printk(BTFE64_DETA"\n");
+    printk(DBOOT64_DETA"\n");
 }
 
 void print_system_values(void)
@@ -71,14 +71,14 @@ void print_system_values(void)
     store_idt(&idt);
 
     /* Note the limit is 1 less than the actual length */
-    printk(BTFE64_DETA"GDT %016llx:%04x\n", gdt.base, gdt.limit);
+    printk(DBOOT64_DETA"GDT %016llx:%04x\n", gdt.base, gdt.limit);
     /*print_hex("GDT: ", (void*)gdt.base, gdt.limit + 1);*/
-    printk(BTFE64_DETA"IDT %016llx:%04x\n", idt.base, idt.limit);
+    printk(DBOOT64_DETA"IDT %016llx:%04x\n", idt.base, idt.limit);
     /*print_hex("IDT: ", (void*)idt.base, idt.limit + 1);*/
-    printk(BTFE64_DETA"CR0: %08llx\n", read_cr0());
-    printk(BTFE64_DETA"CR3: %08llx\n", read_cr3());
-    printk(BTFE64_DETA"CR4: %08llx\n", read_cr4());
-    printk(BTFE64_DETA"IA32_EFER MSR: %016llx\n", rdmsr(MSR_EFER));
+    printk(DBOOT64_DETA"CR0: %08llx\n", read_cr0());
+    printk(DBOOT64_DETA"CR3: %08llx\n", read_cr3());
+    printk(DBOOT64_DETA"CR4: %08llx\n", read_cr4());
+    printk(DBOOT64_DETA"IA32_EFER MSR: %016llx\n", rdmsr(MSR_EFER));
 }
 
 static bool g_calibrated = false;

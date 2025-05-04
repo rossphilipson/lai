@@ -90,12 +90,12 @@ typedef struct {
 
 /* map */
 static const tb_loglvl_map_t g_loglvl_map[] = {
-    { "none",  BTFE64_LOG_LEVEL_NONE  },
-    { "err",   BTFE64_LOG_LEVEL_ERR   },
-    { "warn",  BTFE64_LOG_LEVEL_WARN  },
-    { "info",  BTFE64_LOG_LEVEL_INFO  },
-    { "detail",BTFE64_LOG_LEVEL_DETA  },
-    { "all",   BTFE64_LOG_LEVEL_ALL   },
+    { "none",  DBOOT64_LOG_LEVEL_NONE  },
+    { "err",   DBOOT64_LOG_LEVEL_ERR   },
+    { "warn",  DBOOT64_LOG_LEVEL_WARN  },
+    { "info",  DBOOT64_LOG_LEVEL_INFO  },
+    { "detail",DBOOT64_LOG_LEVEL_DETA  },
+    { "all",   DBOOT64_LOG_LEVEL_ALL   },
 };
 
 static const char* get_option_val(const cmdline_option_t *options,  char vals[][MAX_VALUE_LEN],    const char *opt_name)
@@ -106,7 +106,7 @@ static const char* get_option_val(const cmdline_option_t *options,  char vals[][
         if ( strcmp(options[i].name, opt_name) == 0 )
             return vals[i];
     }
-    printk(BTFE64_ERR"requested unknown option: %s\n", opt_name);
+    printk(DBOOT64_ERR"requested unknown option: %s\n", opt_name);
     return NULL;
 }
 
@@ -180,7 +180,7 @@ void linux_parse_cmdline(const char *cmdline)
 
 uint8_t get_loglvl_prefix(char **pbuf, int *len)
 {
-    uint8_t log_level = BTFE64_LOG_LEVEL_ALL;
+    uint8_t log_level = DBOOT64_LOG_LEVEL_ALL;
 
     if ( *len > 2 && **pbuf == '<' && *(*pbuf+2) == '>'
                   && isdigit(*(*pbuf+1)) ) {
@@ -205,7 +205,7 @@ void get_loglvl(void)
     while ( isspace(*loglvl) )
         loglvl++;
 
-    g_log_level = BTFE64_LOG_LEVEL_NONE;
+    g_log_level = DBOOT64_LOG_LEVEL_NONE;
 
     while ( *loglvl != '\0' ) {
         unsigned int i;
@@ -215,8 +215,8 @@ void get_loglvl(void)
                      strlen(g_loglvl_map[i].log_name)) == 0 ) {
                 loglvl += strlen(g_loglvl_map[i].log_name);
 
-                if ( g_loglvl_map[i].log_val == BTFE64_LOG_LEVEL_NONE ) {
-                    g_log_level = BTFE64_LOG_LEVEL_NONE;
+                if ( g_loglvl_map[i].log_val == DBOOT64_LOG_LEVEL_NONE ) {
+                    g_log_level = DBOOT64_LOG_LEVEL_NONE;
                     return;
                 }
                 else {
@@ -248,28 +248,28 @@ void get_log_targets(void)
 
     /* determine if no targets set explicitly */
     if ( strcmp(targets, "none") == 0 ) {
-        g_log_targets = BTFE64_LOG_TARGET_NONE; /* print nothing */
+        g_log_targets = DBOOT64_LOG_TARGET_NONE; /* print nothing */
         return;
     }
 
     /* else init to nothing and parse the possible targets */
-    g_log_targets = BTFE64_LOG_TARGET_NONE;
+    g_log_targets = DBOOT64_LOG_TARGET_NONE;
 
     while ( *targets != '\0' ) {
         if ( strncmp(targets, "memory", 6) == 0 ) {
-            g_log_targets |= BTFE64_LOG_TARGET_MEMORY;
+            g_log_targets |= DBOOT64_LOG_TARGET_MEMORY;
             targets += 6;
         }
         else if ( strncmp(targets, "serial", 6) == 0 ) {
-            g_log_targets |= BTFE64_LOG_TARGET_SERIAL;
+            g_log_targets |= DBOOT64_LOG_TARGET_SERIAL;
             targets += 6;
         }
         else if ( strncmp(targets, "vga", 3) == 0 && efi_is_postebs() ) {
-            g_log_targets |= BTFE64_LOG_TARGET_VGA;
+            g_log_targets |= DBOOT64_LOG_TARGET_VGA;
             targets += 3;
         }
         else if ( strncmp(targets, "efi", 3) == 0 && !efi_is_postebs() ) {
-            g_log_targets |= BTFE64_LOG_TARGET_EFI;
+            g_log_targets |= DBOOT64_LOG_TARGET_EFI;
             targets += 3;
         }
         else
