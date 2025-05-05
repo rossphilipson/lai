@@ -16,10 +16,10 @@ OBJ += $(SRC:.c=.o)
 CFLAGS += -DBTX64_CHANGESET=\""$(shell (echo "Boot Test Framework EFI" && uname -m && date) 2>/dev/null)"\"
 
 .PHONY: all
-all: btfe64.lds btfe64.efi btfe64.dsm
+all: btx64.lds btx64.efi btx64.dsm
 
-btfe64.efi: $(OBJ)
-	$(LD) btfe64.lds $(LDFLAGS) $^ -o $@
+btx64.efi: $(OBJ)
+	$(LD) btx64.lds $(LDFLAGS) $^ -o $@
 
 # Grrr someone is frobbing the stack
 tpm_20.o: tpm_20.c
@@ -31,12 +31,12 @@ tpm_20.o: tpm_20.c
 %.o: %.S
 	$(CC) $(AFLAGS) -c $< -o $@
 
-btfe64.lds:
+btx64.lds:
 	$(PWD)/genlds.sh $(CC)
 
-btfe64.dsm:
-	mingw-objdump -d btfe64.efi > btfe64.dsm
+btx64.dsm:
+	mingw-objdump -d btx64.efi > btx64.dsm
 
 .PHONY: clean
 clean:
-	rm -f btfe64.efi *.o btfe64.dsm btfe64.lds
+	rm -f btx64.efi *.o btx64.dsm btx64.lds

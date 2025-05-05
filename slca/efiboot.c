@@ -43,7 +43,7 @@
 #include <printk.h>
 #include <eficore.h>
 #include <eficonfig.h>
-#include <btfe64.h>
+#include <btx64.h>
 
 static EFI_HANDLE       parent_image_handle;
 static EFI_HANDLE       parent_device_handle;
@@ -53,7 +53,7 @@ static uint64_t         init_size; /* original size */
 
 static EFI_FILE_IO_INTERFACE *efi_file_system = NULL;
 
-static uint8_t btfe64_config_file[EFI_MAX_CONFIG_FILE];
+static uint8_t btx64_config_file[EFI_MAX_CONFIG_FILE];
 
 static void efi_debug_pause(void)
 {
@@ -151,9 +151,9 @@ static EFI_STATUS efi_load_config(void)
     }
 
     /* Make a copy of the raw BTX64 config in the MLE */
-    memcpy(btfe64_config_file, (void*)addr, size);
+    memcpy(btx64_config_file, (void*)addr, size);
     cfg = efi_get_file(EFI_FILE_BTX64_CONFIG);
-    cfg->u.base = btfe64_config_file;
+    cfg->u.base = btx64_config_file;
     cfg->size = size;
 
     /* Prep for reading */

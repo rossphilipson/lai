@@ -43,7 +43,7 @@
 #include <printk.h>
 #include <cmdline.h>
 #include <eficonfig.h>
-#include <btfe64.h>
+#include <btx64.h>
 
 /*
  * copy of original command line

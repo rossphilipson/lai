@@ -41,7 +41,7 @@
 #include <printk.h>
 #include <eficore.h>
 #include <pe.h>
-#include <btfe64.h>
+#include <btx64.h>
 
 /* Global Table Pointers */
 EFI_SYSTEM_TABLE        *ST;
@@ -80,7 +80,7 @@ EFI_GUID Acpi20TableGuid          = ACPI_20_TABLE_GUID;
 EFI_GUID SMBIOSTableGuid          = SMBIOS_TABLE_GUID;
 
 /* BTX64 */
-EFI_GUID Btfe64Guid               = EFI_BTX64_XEN_GUID;
+EFI_GUID Btx64Guid                = EFI_BTX64_XEN_GUID;
 
 void atow(wchar_t *dst, const char *src, uint64_t count)
 {

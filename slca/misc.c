@@ -45,7 +45,7 @@
 #include <page.h>
 #include <ctype.h>
 #include <misc.h>
-#include <btfe64.h>
+#include <btx64.h>
 
 /*
  * if 'prefix' != NULL, print it before each line of hex string

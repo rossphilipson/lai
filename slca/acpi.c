@@ -41,7 +41,7 @@
 #include <string.h>
 #include <printk.h>
 #include <eficore.h>
-#include <btfe64.h>
+#include <btx64.h>
 #include <acpi.h>
 #include <misc.h>
 #include <cmdline.h>
