@@ -107,7 +107,7 @@ static EFI_STATUS efi_load_config(void)
 {
     EFI_STATUS            status;
     wchar_t              *file_path = NULL;
-    EFI_PHYSICAL_ADDRESS  addr = DBOOT64_MAX_IMAGE_MEM;
+    EFI_PHYSICAL_ADDRESS  addr = BTX64_MAX_IMAGE_MEM;
     void                 *buffer = NULL;
     uint64_t              size;
     const char           *cmdline;
@@ -150,9 +150,9 @@ static EFI_STATUS efi_load_config(void)
         goto err;
     }
 
-    /* Make a copy of the raw DBOOT64 config in the MLE */
+    /* Make a copy of the raw BTX64 config in the MLE */
     memcpy(btfe64_config_file, (void*)addr, size);
-    cfg = efi_get_file(EFI_FILE_DBOOT64_CONFIG);
+    cfg = efi_get_file(EFI_FILE_BTX64_CONFIG);
     cfg->u.base = btfe64_config_file;
     cfg->size = size;
 
@@ -164,7 +164,7 @@ static EFI_STATUS efi_load_config(void)
 
     /* Copy and parse the command line */
     memset(g_cmdline, '\0', sizeof(g_cmdline));
-    cmdline = efi_cfg_get_value(cfg, SECTION_DBOOT64, ITEM_OPTIONS);
+    cmdline = efi_cfg_get_value(cfg, SECTION_BTX64, ITEM_OPTIONS);
     if (cmdline)
         strncpy(g_cmdline, cmdline, sizeof(g_cmdline)-1);
 
@@ -195,7 +195,7 @@ EFI_STATUS efi_main(EFI_HANDLE ImageHandle,
 
     /* So we can use printk via EFI console protocol */
     printk_init(INIT_EARLY_EFI);
-    printk("DBOOT64 EFI Entry Point: %p\n", efi_main);
+    printk("BTX64 EFI Entry Point: %p\n", efi_main);
 
     status = BS->HandleProtocol(ImageHandle,
                                 &LoadedImageProtocol,
@@ -210,7 +210,7 @@ EFI_STATUS efi_main(EFI_HANDLE ImageHandle,
         parent_image_handle = ImageHandle;
     }
     else {
-        printk("DBOOT64 FATAL! Cannot get loaded image information\n");
+        printk("BTX64 FATAL! Cannot get loaded image information\n");
         goto out;
     }
 
@@ -238,14 +238,14 @@ EFI_STATUS efi_main(EFI_HANDLE ImageHandle,
     /* DEBUG */
     print_test_chars();
 
-    printk(DBOOT64_INFO"******************* DBOOT64 *******************\n");
-    printk(DBOOT64_INFO"   %s\n", DBOOT64_CHANGESET);
-    printk(DBOOT64_INFO"   command line: %s\n", g_cmdline);
-    printk(DBOOT64_INFO"*********************************************\n");
+    printk(BTX64_INFO"******************* BTX64 *******************\n");
+    printk(BTX64_INFO"   %s\n", BTX64_CHANGESET);
+    printk(BTX64_INFO"   command line: %s\n", g_cmdline);
+    printk(BTX64_INFO"*********************************************\n");
 
     /* TODO interesting stuff here */
 
-    printk("DBOOT64 resetting system...");
+    printk("BTX64 resetting system...");
     efi_debug_pause();
     status = EFI_SUCCESS;
 

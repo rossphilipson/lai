@@ -13,7 +13,7 @@ OBJ = $(ASM:.S=.o) # must be first
 OBJ += $(SRC:.c=.o)
 
 # Banner
-CFLAGS += -DDBOOT64_CHANGESET=\""$(shell (echo "Boot Test Framework EFI" && uname -m && date) 2>/dev/null)"\"
+CFLAGS += -DBTX64_CHANGESET=\""$(shell (echo "Boot Test Framework EFI" && uname -m && date) 2>/dev/null)"\"
 
 .PHONY: all
 all: btfe64.lds btfe64.efi btfe64.dsm

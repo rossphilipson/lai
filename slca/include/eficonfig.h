@@ -39,14 +39,14 @@
 #define EFI_MAX_PATH 512
 #define EFI_MAX_CONFIG_FILE 1024 /* plenty of room for a config file */
 
-/* DBOOT64 config */
-#define SECTION_DBOOT64 "btfe64"
+/* BTX64 config */
+#define SECTION_BTX64 "btfe64"
 # define ITEM_OPTIONS "options"
 # define ITEM_XENPATH "xenpath"
 
 typedef enum efi_file_select {
     EFI_FILE_INVALID = 0,
-    EFI_FILE_DBOOT64_CONFIG,
+    EFI_FILE_BTX64_CONFIG,
     EFI_FILE_MAX
 } efi_file_select_t;
 

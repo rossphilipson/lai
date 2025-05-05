@@ -41,12 +41,12 @@
 /* TODO debug only stuffs */
 #define EFI_DEBUG
 
-/* Shared RT variable between DBOOT64 and Xen */
-#define EFI_DBOOT64_XEN_GUID \
+/* Shared RT variable between BTX64 and Xen */
+#define EFI_BTX64_XEN_GUID \
     { 0xf112e6cb, 0xce01, 0x4573, {0xa0, 0x52, 0xfb, 0xdb, 0x6c, 0xc0, 0xc7, 0xcb} }
 
-#define EFI_DBOOT64_XEN_REV  1
-#define EFI_DBOOT64_XEN_NAME L"Btfe64Var"
+#define EFI_BTX64_XEN_REV  1
+#define EFI_BTX64_XEN_NAME L"Btfe64Var"
 
 /* Un-extern these that are defined in the GNU-EFI headers */
 EFI_SYSTEM_TABLE         *ST;
